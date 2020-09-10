@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/styles.css">
+<title>tienda online</title>
+</head>
+<body>
+	<nav class="navbar h-5  mt-2">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#myNavbar">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+		<a href="#" class="navbar-brand"><img alt="Logo"  width="100px" height="40px" src="./img/logo-pccomponentes.jpg"></a>
+
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav">
+			<li><a class="nav-item active nav-link"
+					th:href="@{/trabajadorCompras}">Volver</a></li>			
+			<li>Bienvenido <span th:text="${nombre.getNombre()}"></span></li>			
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+					<li><a th:href="@{/logout}"> <img alt=""
+							src="./img/Human-gnome-logout.svg.png" width="40px" height="40px">
+					</a></li>
+			</ul>
+			<div>
+				<form class="navbar-right" style="margin-right: 30px; width: 400px; margin-top: 15px;">
+				<input type="text" class="form-control" placeholder="Buscar En la Tienda Online De Ismael..."
+					name="q">
+			</form>
+			</div>
+		
+		</div>
+			
+	</div>
+</nav>
+	
+<div class="row" style="margin-top: 100px;">
+		<div class="col-md-offset-4 col-md-4">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td><strong>ID origen</strong></td>
+						<td><strong>asunto</strong></td>
+						<td><strong>cuerpo</strong></td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="lista: ${listaMensajes2}">
+							<td><span th:text="${lista.id}"></span>
+							<td><span th:text="${lista.asunto}"></span>
+						    <td><span th:text="${lista.cuerpo}"></span>
+						</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</body>
+</html>

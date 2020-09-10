@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="proyecto_tienda">
+		<class>com.proyecto_tienda.model.CabeceraPedido</class>
+		<class>com.proyecto_tienda.model.CategoriasMenu</class>
+		<class>com.proyecto_tienda.model.Cliente</class>
+		<class>com.proyecto_tienda.model.DetallePedido</class>
+		<class>com.proyecto_tienda.model.Mensajeria</class>
+		<class>com.proyecto_tienda.model.OpcCategoria</class>
+		<class>com.proyecto_tienda.model.OpcionesMenu</class>
+		<class>com.proyecto_tienda.model.Persona</class>
+		<class>com.proyecto_tienda.model.Producto</class>
+		<class>com.proyecto_tienda.model.Trabajadore</class>
+		<class>com.proyecto_tienda.model.ValoracionesProducto</class>
+		<validation-mode>NONE</validation-mode>
+	</persistence-unit>
+	
+</persistence>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<title>Document</title>
+</head>
+
+<body>
+	<div class="container">
+		<form th:action="@{/modificarProducto}" method="post" enctype="multipart/form-data">
+
+			<div class="form-group">
+				Descripcion
+				<input name="descripcion" type="text" class="form-control" th:value="${prod.descripcion}" required>
+			</div>
+			<div class="form-group">
+				Precio/ud
+				<input name="precioUnitarioSinIva" type="text" class="form-control"
+					th:value="${prod.precioUnitarioSinIva}" required>
+			</div>
+			<div class="form-group">
+				Stock
+				<input name="stock" type="text" class="form-control" th:value="${prod.stock}" required>
+			</div>
+			<div class="form-group">
+				<input type="file" id="file" name="file" style="display:none;">
+				<label class="btn btn-primary" for="file">Imagen del producto</label>
+
+			</div>
+
+			<input id="idProd" name="id" type="hidden" th:value="${prod.id}">
+			<div class="modal-footer">
+				<a type="button" class="btn btn-secondary" th:href="@{/trabajadorCompras}" data-dismiss="modal"><i class="fa fa-times"></i>
+					Descartar</a>
+				<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-product-hunt"></i>
+					ActualizarProducto</button>
+			</div>
+		</form>
+	</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+
+[2020-08-26 02:08:49] [ INFO ] [ClienteController:117] cliente logeado con exito: Barclay
+[2020-08-26 02:08:52] [ INFO ] [ClienteController:168] producto añadido al carrito con exito
+[2020-08-26 02:08:53] [ INFO ] [ClienteController:245] Vista de los detalles del pedido: Barclay
+[2020-08-26 02:30:36] [ INFO ] [ClienteController:117] cliente logeado con exito: Barclay
+[2020-08-26 02:30:38] [ INFO ] [ClienteController:168] producto añadido al carrito con exito
+[2020-08-26 02:30:39] [ INFO ] [ClienteController:245] Vista de los detalles del pedido: Barclay
+[2020-08-26 02:35:44] [ INFO ] [ClienteController:117] cliente logeado con exito: Barclay
+[2020-08-26 02:35:47] [ INFO ] [ClienteController:168] producto añadido al carrito con exito
+[2020-08-26 02:35:48] [ INFO ] [ClienteController:245] Vista de los detalles del pedido: Barclay

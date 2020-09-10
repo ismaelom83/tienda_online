@@ -1,0 +1,46 @@
+<div class="modal fade" id="modalLoginForm2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Insertar Producto</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form th:action="@{/insertarProductos}"  method="post" enctype="multipart/form-data" id="form">
+				<div class="modal-body">
+					<div class="form-group">
+						<input name="descripcion" type="text" class="form-control" placeholder="Descripcion" required>
+					</div>
+					<div class="form-group">
+						<input name="precioUnitarioSinIva" type="text" class="form-control" placeholder="Precio"
+							required>
+					</div>
+					<div class="form-group">
+						<input name="stock" type="text" class="form-control" placeholder="Stock" required>
+					</div>
+					<div class="form-group">
+						<select  name="categoria2" form="form">
+							<div>
+								<option th:each="cat: ${listaCategorias}" th:value="${cat.categoria}" th:text="${cat.categoria}">
+								</option>
+							</div>
+						</select>
+					</div>
+					<div class="form-group">
+						<input type="file" id="file" name="file" style="display:none;" required>
+						<label class="btn btn-primary" for="file">Imagen del producto</label>
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success pull-left">
+						Insertar</button>
+					<a th:href="@{/trabajadorCompras}" class="btn btn-secondary pull-right">
+						descartar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

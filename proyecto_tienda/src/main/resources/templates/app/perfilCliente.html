@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link
+	rel="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- <link rel="stylesheet" href="css/styles.css"> -->
+</head>
+<body>
+	<div class="container" style="margin-top:100px;">
+		<div class="row">
+			<div class="col-12 my-3 pt-3 shadow">
+				<h1>Ficha de cliente</h1>
+				<h2 th:text="${'Nombre y Apellidos: '+ nombre.getNombre()+ ' '+nombre.getApellido1()}"></h2>
+				<h3 th:text="${'email: '+nombre.getMail()}"></h3>
+				<p>
+					<strong th:text="${'Edad: '+nombre.getEdad()}"></strong><br>
+					<strong th:text="${'Tipo Persona: '+nombre.getTipoPersona()}"></strong><br>
+					<strong th:text="${'Saldo: '+cliente.getSaldo()+' '+'€'}"></strong><br>
+					<strong th:text="${'Puntos: '+cliente.getPuntos()}"></strong><br>
+				</p>
+				<br>
+				<form th:action="@{/clientes}" method="get">
+					<button type="submit" class="btn btn-success">Volver</button>
+				</form>
+				<br>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

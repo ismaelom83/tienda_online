@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+	<!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css"> -->
+
+	<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+	<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+
+
+
+
+	<!-- DATA TABLE -->
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+
+	<script type="text/javascript" src="js/carga.js"></script>
+	<script type="text/javascript" src="js/datatable.js"></script>
+
+
+	<title>Tienda Online</title>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand navbar-light bg-light">
+		<a href="#" class="navbar-brand"><img alt="Logo" width="100px" height="40px"
+				src="./img/logo-pccomponentes.jpg"></a>
+		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li><a class="nav-item active nav-link" th:href="@{/mostrarMensajesTrabajador}">Ver mensajes</a></li>
+				<li><a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
+						data-target="#modalLoginForm2">InsertarProductos</a></li>
+				<li> <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
+						data-target="#modalLoginForm">CrearCategoria</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li>Bienvenido <span th:text="${nombre.getNombre()}"></span></li>
+			</ul>
+			<form class="navbar-form navbar-right" style="margin-right: 30px; width: 400px">
+				<input type="text" class="form-control" placeholder="Buscar En la Tienda Online De Ismael..." name="q">
+			</form>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a class="nav-item active nav-link" th:href="@{/logout}">
+						<img alt="" src="./img/Human-gnome-logout.svg.png" width="40px" height="40px">
+					</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="alumno-profesor">
+		<input type="submit" value="Ver Productos" id="productos" class="form-control  btn btn-primary mb-1">
+
+		<input type="submit" value="Ver Clientes" id="clientes" class="form-control  btn btn-secondary">
+	</div>
+
+
+	<br>
+	<br>
+	<div class="container" id="wp">
+		<div class=" main-section mb-3" id="formularioIsmaelFinal2">
+			<div class="tab-pane fade show " id="list" role="tabpanel" aria-labelledby="list-tab">
+				<div class="card bg-secondary text-light">
+					<div class="card-header  col-sm-10">
+						<h4>Lista De Clientes</h4>
+					</div>
+					<div class="card-body ">
+						<div class="table-responsive">
+							<table id="userList" class="table">
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Apellido</th>
+										<th>DNI</th>
+										<th>Email</th>
+										<th>Tipo Persona</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="persona: ${listaClientes}">
+										<td th:text="${persona.nombre}"></td>
+										<td th:text="${persona.apellido1}"></td>
+										<td th:text="${persona.dni}"></td>
+										<td th:text="${persona.mail}"></td>
+										<td th:text="${persona.tipoPersona}"></td>
+										<td><a th:href="@{/cabeceraPedidoTrabajador/{id}(id=${persona.id})}"
+												type="button" class="btn-secondary">Ver Pedidos</a></td>
+										<td>
+											<a th:href="@{/cabeceraPedidoTrabajador/{id}(id=${persona.id})}"></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--       ----------------         segundo modal      --------------------               -->
+
+
+
+	<div class="container">
+		<div class=" main-section mb-3" id="formularioIsmaelFinal">
+			<div class="tab-pane fade show " id="list" role="tabpanel" aria-labelledby="list-tab">
+				<div class="card bg-secondary text-light">
+					<div class="card-header  col-sm-10">
+						<h4>Lista De Productos</h4>
+					</div>
+					<div class="card-body ">
+						<div class="table-responsive">
+							<table id="userList2" class="table">
+								<thead>
+									<tr>
+										<th>Descripcion</th>
+										<th>Precio</th>
+										<th>Stock</th>
+										<th>Categoria</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="producto: ${listaProductos2}">
+										<td th:text="${producto.descripcion}"></td>
+										<td th:text="${producto.precioUnitarioSinIva}"></td>
+										<td th:text="${producto.stock}"></td>
+										<td th:text="${producto.categoria}"></td>
+										<td>
+											<a th:href="@{/editarProducto/{id}(id=${producto.id})}"><i
+													class="fas fa-edit"></i></a>
+											| <a href="#"
+												th:onclick="'javascript:confirmacionBorrado(\''+ ${producto.id} +'\');'"><i
+													class="fas fa-user-times"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:insert="modales/insertarCategoria">...</div>
+	<div th:insert="modales/insertarProducto">...</div>
+	<div th:insert="modales/borrarProducto">...</div>
+
+
+	<script type="text/javascript">
+		function confirmacionBorrado(id) {
+			$('#deleteModal').modal('show');
+			$("#userIdHiddenInput").val(id);
+		}
+
+		function borrarUsuario() {
+			var id = $("#userIdHiddenInput").val();
+			window.location = "eliminarProducto/" + id;
+		}
+	</script>
+
+</body>
+
+</html>

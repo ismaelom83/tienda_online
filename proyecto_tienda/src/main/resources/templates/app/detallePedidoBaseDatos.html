@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="css/styles2.css"></link>
+	<title>Document</title>
+</head>
+<body>
+		<div class="container">
+		<div class="row">
+			<div class="col-xs-offset-3 col-xs-6">
+				<div class="invoice-title">
+					<h2>Factura</h2>
+					<h3 class="pull-right">
+						Compra #<span>1234</span>
+					</h3>
+				</div>
+				<hr></hr>
+				<div class="row">
+					<div class="col-xs-6">
+						<address>
+							<strong>Comprado por:</strong><br></br> <span></span><br></br>
+						</address>
+					</div>
+					<div class="col-xs-6 text-right">
+						<address>
+							<strong>Fecha de compra:</strong><br></br> <span></span><br></br>
+							<br></br>
+						</address>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<strong>Listado de productos</strong>
+						</h3>
+					</div>
+					<div class="panel-body invoice-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<td><strong>Producto</strong></td>
+										<td class="text-right"><strong>Precio</strong></td>
+										<td class="text-right"><strong>cantidad</strong></td>
+
+									</tr>
+								</thead>		
+									<tr th:each="lineas: ${lineaDetalle}">
+										<td><span th:text="${lineas.producto.descripcion}"></span></td>
+										<td class="text-right"><span th:text="${lineas.producto.precioUnitarioSinIva}"></span></td>
+										<td class="text-right"><span th:text="${lineas.producto.cantidad}"></span></td>
+
+									</tr>
+								<tr>
+									<td class="thick-line text-right"><strong>Total</strong></td>
+									<td class="thick-line text-right"><span th:text="${totalLinea2}"></span></td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:each="lineas: ${lineaDetalle}">
+				<a th:href="@{/trabajadorCompras}" class="btn btn-success">Volver a Trabajador</a><br></br><br></br>
+			<a th:href="@{/generarFactura/{id}(id=${lineas.id})}" class="btn btn-primary">Generar factura PDF</a>
+			</div>
+			
+		</div>
+	</div>
+
+
+	<br></br>
+	<br></br>
+</body>
+</html>

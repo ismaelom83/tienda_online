@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<title>Tioenda Online</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles2.css}">
+
+</head>
+
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-1 col-md-8">
+				<div class="col-md-8">
+					<img th:src="@{/img/}+${productomodel.rutaImagen}" class="img-responsive center-block" alt="Image">
+				</div>
+				<br> <br> <br>
+				<div class="col-md-4">
+					<div class="text-center">
+						<h5>
+							<span text=""></span><br>
+							<span text=""> </span>
+						</h5>
+					</div>
+					<div>
+						<h3 th:text="${productomodel.descripcion}"></h3>
+					</div>
+					<br>
+					<div class="pull-right">
+						<h4>
+							<strong th:text="${productomodel.precioUnitarioSinIva}"></strong>
+						</h4>
+					</div>
+					<div>
+						<form th:action="@{/app/carrito/{id}(id=${productomodel.id})}" method="get">
+							<label>NºProductos</label><br> <input type="number" name="cantidad" value="1"
+								width="30px"><br>
+							<button type="submit" class="btn btn-lg btn-success btn-product">Añadir
+								a la cesta</button>
+						</form>
+					</div>
+					<br> <br>
+					<form sec:authorize="isAuthenticated()" th:action="@{/clientes}" method="get">
+						<button type="submit" class="btn btn-lg btn-primary btn-product">
+							VOLVER</button>
+					</form>
+					<form sec:authorize="!isAuthenticated()" th:action="@{/index}" method="get">
+						<button type="submit" class="btn btn-lg btn-primary btn-product">
+							VOLVER</button>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<h1 class="titulo-valoraciones">Valoraciones de los clientes</h1>
+	<br>
+	<div class="lista-valoraciones" th:each="lista: ${listaValoraciones}">
+		<div class="cuerpo-valoraciones">
+			<h4 th:text="${'Valorado por: '+lista.nombre_persona}"></h4>
+			<h3 th:text="${'puntuacion del articulo: '+lista.valoracion}"></h3>
+			<h2 th:text="${lista.comentarios}"></h2>
+
+		</div>
+
+	</div>
+	<br>
+	<br>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+		th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

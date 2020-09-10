@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+	<div class="container">
+
+		<div id="signupbox" style="margin-top: 50px"
+			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+			<div class="panel">
+				<div class="panel-heading">
+					<div class="panel-title">Crear una nueva cuenta para cliente</div>
+				</div>
+				<div class="panel-body">
+					<form id="signupform" autocomplete="off" class="form-horizontal" role="form" method="POST" th:action="@{/registro}" th:object="${persona}">
+
+						<div id="signupalert" style="display: none" class="alert alert-danger">
+							<p>Error:</p>
+							<span></span>
+						</div>
+						<div class="form-group">
+							<label for="nombre" class="col-md-3 control-label">Nombre</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control"  th:field="${persona.nombre}"  placeholder="Nombre">
+								<div class="alert-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="apellidos" class="col-md-3 control-label">Apellido1</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control"   th:field="${persona.apellido1}" placeholder="Apellido1">
+									<div class="alert-danger" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="apellidos" class="col-md-3 control-label">Apellido2</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control"  th:field="${persona.apellido2}" placeholder="Apellido2">
+								<div class="alert-danger" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-md-3 control-label">Email</label>
+							<div class="col-md-9">
+								<input type="email" class="form-control"   th:field="${persona.mail}" placeholder="Email">
+								<div class="alert-danger" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="apellidos" class="col-md-3 control-label">DNI</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control"  th:field="${persona.dni}" placeholder="DNI">
+								<div class="alert-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}">Name Error</div>
+								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-md-3 control-label">Password</label>
+							<div class="col-md-9">
+								<input type="password"  class="form-control"
+									th:field="${persona.pass}" placeholder="Password">
+									<div class="alert-danger" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-md-3 control-label">Edad</label>
+							<div class="col-md-9">
+								<input type="number"  th:value="18" class="form-control" th:field="${persona.edad}" placeholder="Edad">
+									<div class="alert-danger" th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}">Name Error</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tipo33" class="col-md-3 control-label"></label>
+							<div class="col-md-7">
+								<label for="tipo33">Elige Tipo cliente</label>
+								<select name="" id="tipo33" th:field="${persona.tipoPersona}" required>			
+									<option th:value="CN">CN</option>
+									<option  th:value="CP">CP</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-md-3 control-label"></label>
+							<div class="col-md-9">
+								<input type="hidden" class="form-control" th:value="0" th:field="${persona.bajaLogica}" placeholder="Baja">
+							</div>
+						</div>
+						<div class="form-group">
+							<!-- Button -->
+							<div class="col-md-offset-3 col-md-9">
+								<button id="btn-signup" type="submit" class="btn btn-info">
+									Continuar</button>
+								<span style="margin-left: 8px;">o&nbsp;</span> <a th:href="@{/login}" type="button"
+									class="btn btn-default">Volver al formulario
+									de login</a>
+							</div>
+						</div>
+						<div class="alert alert-danger text-center" th:if="${mensajeError}" th:text="${mensajeError}">Error MEssage</div>
+					</form>
+				</div>
+				<a th:href="@{index}" class="btn btn-info mb-2">Volver</a>
+			</div>
+			
+		</div>
+
+	</div>
+	<br>
+	<br>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

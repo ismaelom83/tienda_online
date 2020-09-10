@@ -1,0 +1,48 @@
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Crear Categoria</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form class="col-12" th:action="@{/insertarCategoria}" method="POST">
+
+				<div class="modal-body">
+					<div class="form-group">
+						<input name="nombre" type="text" class="form-control" placeholder="Nombre de categoria"
+							required>
+					</div>
+
+					<div class="form-group">
+						Categorias existentes:
+						<select id="categoria" name="categoria" form="form">
+							<div th:each="cat: ${listaCategorias}">
+								<option th:value="${cat.categoria}" th:text="${cat.categoria}"></option>
+							</div>
+						</select>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i>
+						Descartar</button>
+					<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-product-hunt"></i>
+						Insertar</button>
+				</div>
+			</form>
+
+			<div th:if="${param.error}" class="alert alert-danger" role="alert">
+				Credenciales No Validos.
+			</div>
+			<div th:if="${param.logout}" class="alert alert-success" role="alert">
+				Sesion de Usuario Cerrada.
+			</div>
+
+		</div>
+	</div>
+</div>
