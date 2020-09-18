@@ -42,16 +42,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 			.and().csrf().disable().logout().permitAll().logoutSuccessUrl("/login?logout");
 		}
 		
-		// clase de spring security para descifrar o cifrar la contraseña (de momento la
-		// he cifrado desde su pagina web
-		// https://www.dailycred.com/article/bcrypt-calculator
-		// mas adelante habra que incorporarlo en la aplicacion)
+		// clase de spring security para descifrar o cifrar la contraseña
 		BCryptPasswordEncoder passwordDescifrada;
 		
 		@Bean
 		public BCryptPasswordEncoder passwordEncoder() {
-			// el numero 4 indica la longitud de la contraseña.
-			passwordDescifrada = new BCryptPasswordEncoder();
+			passwordDescifrada = new BCryptPasswordEncoder(4);
 			return passwordDescifrada;
 		}
 		

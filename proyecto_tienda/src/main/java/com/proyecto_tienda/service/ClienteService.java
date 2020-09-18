@@ -2,6 +2,7 @@ package com.proyecto_tienda.service;
 
 import java.util.ArrayList;
 
+import com.proyecto_tienda.dto.ChangePasswordForm;
 import com.proyecto_tienda.model.Cliente;
 import com.proyecto_tienda.model.Persona;
 
@@ -17,4 +18,6 @@ public interface ClienteService {
 	void registrarClientes(int idPersona, int puntos, float saldo, String categoria) throws Exception;
 
 	Cliente buscarClienteId(int id) throws Exception;
+	
+	Persona cambiarPassword(ChangePasswordForm ch)throws Exception;
 }

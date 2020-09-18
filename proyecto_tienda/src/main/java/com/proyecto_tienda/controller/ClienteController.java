@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -18,11 +20,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.proyecto_tienda.dto.ChangePasswordForm;
 import com.proyecto_tienda.model.CabeceraPedido;
 import com.proyecto_tienda.model.CategoriasMenu;
 import com.proyecto_tienda.model.Cliente;
@@ -174,9 +180,11 @@ public class ClienteController {
 			logger.error("Lista de productos no encontrada");
 			e1.printStackTrace();
 		}
+	
 		model.addAttribute("listaCategorias", listaCategorias);
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
+		model.addAttribute("passwordForm",new ChangePasswordForm(persona.getId()));
 		try {
 			model.addAttribute("listaProductos", pService.buscarTodosProductos());
 		} catch (IOException e) {
@@ -380,20 +388,12 @@ public class ClienteController {
 		modelo.addAttribute("registro", true);
 		System.out.println(resultado);
 		if (resultado.hasErrors()) {
-			System.out.println("hay un error");
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido");
 			return "app/registro";
 		} else {
 			try {
 				modelo.addAttribute("persona", persona);
-				System.out.println(persona.getNombre());
-				System.out.println(persona.getMail());
-				System.out.println(persona.getApellido1());
-				System.out.println(persona.getApellido2());
-				System.out.println(persona.getPass());
-				System.out.println(persona.getEdad());
-				System.out.println(persona.getTipoPersona());
 				traSer.registrarPersona(persona);
 				persona = cliService.consultaUltimoCliente();
 				cliService.registrarClientes(persona.getId(), 1000, 1000, "normal");
@@ -503,5 +503,25 @@ public class ClienteController {
 		return "app/perfilCliente";
 
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping("/editarUsuario/cambiarPassword")
+	public ResponseEntity cambiarPasswordPost(@Valid @RequestBody ChangePasswordForm form,Errors errors) {
+		try {
+			if(errors.hasErrors()) {
+				String result = errors.getAllErrors()
+                        .stream().map(x -> x.getDefaultMessage())
+                        .collect(Collectors.joining(""));
+
+				throw new Exception(result);
+			}
+			cliService.cambiarPassword(form);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok("Success");
+		
+	}
+	
 
 }

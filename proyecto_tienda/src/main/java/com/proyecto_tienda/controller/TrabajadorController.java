@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proyecto_tienda.dto.ChangePasswordForm;
 import com.proyecto_tienda.model.CabeceraPedido;
 import com.proyecto_tienda.model.CategoriasMenu;
 import com.proyecto_tienda.model.DetallePedido;
@@ -137,6 +138,7 @@ public class TrabajadorController {
 			logger.error("Lista de productos no encontrada");
 			e1.printStackTrace();
 		}
+		
 		model.addAttribute("listaCategorias", listaCategorias);
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
@@ -250,6 +252,7 @@ public class TrabajadorController {
 	@GetMapping("/insertarProductos")
 	public String insertarProductosGet(Model model) {
 
+		
 		ArrayList<CategoriasMenu> listaCategorias = null;
 		try {
 			listaCategorias = catService.buscarCategoria();
@@ -257,9 +260,10 @@ public class TrabajadorController {
 			logger.error("Lista de productos no encontrada");
 			e.printStackTrace();
 		}
+		System.out.println("estoy en insertar productos");
 		model.addAttribute("listaCategorias", listaCategorias);
 
-		return "modales/insertarProducto";
+		return "modales/insertarCategoria";
 
 	}
 
@@ -272,7 +276,6 @@ public class TrabajadorController {
 		try {
 			listaCategorias = catService.buscarCategoria();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		model.addAttribute("listaCategorias", listaCategorias);
