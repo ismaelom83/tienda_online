@@ -90,7 +90,6 @@ public class TrabajadorController {
 	   try {
 		devolucionPedidos = deService.buscarDevoluconPedidos(persona.getId());
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 		model.addAttribute("listaDevolucionPedidos", devolucionPedidos);
@@ -100,11 +99,9 @@ public class TrabajadorController {
 
 	@GetMapping("/ControllerDevolver")
 	public String devolver(@RequestParam String id) {
-		System.out.println("esto es el id del devolucion" + id);
 		try {
 			deService.borrarPedido(Integer.parseInt(id));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		menService.borrarMensajeDevolucion(Integer.parseInt(id));
@@ -116,7 +113,6 @@ public class TrabajadorController {
 	public String enviarMensajeGet() {
 
 		return "app/enviarMensaje";
-
 	}
 
 	@GetMapping("/enviarMensajeBaseDatos")
