@@ -80,4 +80,25 @@ public class DetallePedidoRepo {
 		updateQuery.executeUpdate();
 		txn.commit();
 	}
+	
+	public void borrarLineaPedido(int id) throws Exception{
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("delete from DetallePedido dp where id ='"+id+"'");
+		updateQuery.executeUpdate();
+		txn.commit();
+	}
+	
+	public DetallePedido buscarIdDetalleBorrar(int idCabecera) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		String hQuery = "from DetallePedido dp " + " where dp.cabeceraPedido.id = :id";
+		DetallePedido cabecera = session.createQuery(hQuery, DetallePedido.class)
+				.setParameter("id", idCabecera).setMaxResults(1).uniqueResult();
+		return cabecera;
+		
+	}
+	
+	
+	
 }

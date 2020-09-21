@@ -359,10 +359,12 @@ public class ClienteController {
 			for (DetallePedido detallePedido2 : detallePedido) {
 				System.out.println("esto es el id de la cabecera producto: " + detallePedido2.getId());
 			}
+			for (DetallePedido detallePedido2 : detallePedido) {
+				System.out.println("id de la cabecera "+detallePedido2.getCabeceraPedido().getId());
+			}
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		return "app/detallePedido";
 
@@ -373,12 +375,28 @@ public class ClienteController {
 		persona = (Persona) session.getAttribute("nombre");
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
-			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucion", "devolucion",
-					"http://localhost:8080/ControllerDevolver?id=" + id + "", 0, 0);
+			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionTotal", "devolucionTotal",
+					"http://localhost:8080/ControllerDevolverTotal?id=" + id + "", 0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
 		return "redirect:/clientes";
 
+	}
+	
+	@PostMapping("/devolucionParcial")
+	public String devolucionParcial(@RequestParam(name = "idCabecera") String idCabecera,
+			@RequestParam(name = "idLineaProducto") String idLineaProducto,Persona persona,HttpSession session) {
+	
+		persona = (Persona) session.getAttribute("nombre");
+		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
+		for (Persona persona2 : personaLista) {
+			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial", "devolucionParcial",
+					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2="+idCabecera+"", 0, 0);
+		}
+		logger.info("Devolucion realizada con exito: " + persona.getNombre());
+		
+		return "redirect:/clientes";
+		
 	}
 
 	@PostMapping("/registro")

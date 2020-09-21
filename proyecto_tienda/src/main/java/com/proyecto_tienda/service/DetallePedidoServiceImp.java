@@ -40,4 +40,14 @@ public class DetallePedidoServiceImp implements DetallePedidoService {
 		deRepo.borrarPedido(id);
 	}
 
+	@Override
+	public void borrarLineaPedido(int id) throws Exception {
+		deRepo.borrarLineaPedido(id);
+	}
+
+	@Override
+	public DetallePedido buscarIdDetalleBorrar(int idCabecera) throws Exception {
+	 return	deRepo.buscarIdDetalleBorrar(idCabecera);
+	}
+
 }

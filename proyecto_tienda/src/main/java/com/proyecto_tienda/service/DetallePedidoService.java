@@ -11,4 +11,6 @@ public interface DetallePedidoService {
 	void actualizarStock(Long id, int cantidad) throws Exception;
 	ArrayList<Mensajeria> buscarDevoluconPedidos(int id) throws Exception;
 	void borrarPedido(int id) throws Exception;
+	void borrarLineaPedido(int id) throws Exception;
+	DetallePedido buscarIdDetalleBorrar(int idCabecera) throws Exception;
 }

@@ -43,16 +43,20 @@
 							</td>
 							<td class="col-md-1 text-center"><strong th:text="${carrito.producto.precioUnitarioSinIva}">
 								</strong>
-							<td class="text-left"><strong th:text="${carrito.producto.cantidad}">
+							<td class="text-left"><strong th:text="${carrito.getCantidad()}">
 
 								</strong></td>
 
 							<td class="col-md-1"><a th:href="@{/valorarProducto/{id}(id=${carrito.producto.id})}"
 									class="btn btn-success"><span></span>Valorar Articulo
 								</a></td><br>
-							<td class="col-md-1"><a th:href="@{/valorarProducto/{id}(id=${carrito.producto.id})}"
-									class="btn btn-danger"><span></span>Devolucion paracial del producto
-								</a></td>
+							<td class="col-md-1">
+								<form th:action="@{/devolucionParcial}" method="post">
+									<input type="hidden" name="idCabecera" th:value="${carrito.cabeceraPedido.id}">
+									<input type="hidden" name="idLineaProducto" th:value="${carrito.getId()}">
+									<button type="submit" class="btn btn-danger">Solicitar devolucion parcialmente</button>
+								</form>
+							</td>
 						</tr>
 					</tbody>
 					<tr>

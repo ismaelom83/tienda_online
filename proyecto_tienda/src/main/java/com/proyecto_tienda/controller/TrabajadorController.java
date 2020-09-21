@@ -97,7 +97,7 @@ public class TrabajadorController {
 
 	}
 
-	@GetMapping("/ControllerDevolver")
+	@GetMapping("/ControllerDevolverTotal")
 	public String devolver(@RequestParam String id) {
 		try {
 			deService.borrarPedido(Integer.parseInt(id));
@@ -107,6 +107,29 @@ public class TrabajadorController {
 		menService.borrarMensajeDevolucion(Integer.parseInt(id));
 		return "redirect:/devolverPedido";
 
+	}
+	
+	@GetMapping("/ControllerDevolverParcial")
+	public String devolverParcial(@RequestParam String id,@RequestParam String id2) {
+		
+		
+		try {
+			deService.borrarLineaPedido(Integer.parseInt(id));
+			
+		DetallePedido detalle =	deService.buscarIdDetalleBorrar(Integer.parseInt(id2));
+		if (detalle==null) {
+			deService.borrarPedido(Integer.parseInt(id2));
+		} 
+			
+		} catch (NumberFormatException e) {
+			logger.error("El id no es un numero");
+			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("Linea de pedido no encontrada");
+			e.printStackTrace();
+		}
+		menService.borrarMensajeDevolucion(Integer.parseInt(id));
+		return "redirect:/devolverPedido";
 	}
 
 	@GetMapping("/enviarMensaje")
