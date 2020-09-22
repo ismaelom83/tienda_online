@@ -36,6 +36,7 @@ import com.proyecto_tienda.model.DetallePedido;
 import com.proyecto_tienda.model.Persona;
 import com.proyecto_tienda.model.Producto;
 import com.proyecto_tienda.model.ValoracionesProducto;
+import com.proyecto_tienda.repository.ClienteRepo;
 import com.proyecto_tienda.repository.PersonaRepo;
 import com.proyecto_tienda.repository.ValoracionesProductoRepo;
 import com.proyecto_tienda.service.CabeceraPedidoService;
@@ -82,7 +83,7 @@ public class ClienteController {
 
 	@Autowired
 	ValoracionesProductosService valoService;
-	
+
 	@Autowired
 	PersonaRepo personaRepoInterface;
 
@@ -124,7 +125,7 @@ public class ClienteController {
 	@GetMapping("/login")
 	public String login(Model model, Persona persona) {
 		model.addAttribute("persona", new Persona());
-		String tipo="CN";
+		String tipo = "CN";
 		model.addAttribute("tipoPersona", tipo);
 		return "app/login";
 	}
@@ -180,11 +181,11 @@ public class ClienteController {
 			logger.error("Lista de productos no encontrada");
 			e1.printStackTrace();
 		}
-	
+
 		model.addAttribute("listaCategorias", listaCategorias);
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
-		model.addAttribute("passwordForm",new ChangePasswordForm(persona.getId()));
+		model.addAttribute("passwordForm", new ChangePasswordForm(persona.getId()));
 		try {
 			model.addAttribute("listaProductos", pService.buscarTodosProductos());
 		} catch (IOException e) {
@@ -227,7 +228,6 @@ public class ClienteController {
 		sumaTotal = (int) session.getAttribute("sumaTotal");
 		model.addAttribute("sumaTotal", sumaTotal);
 		model.addAttribute("carrito", listaCarrito);
-		
 
 		return "app/carrito";
 
@@ -271,50 +271,76 @@ public class ClienteController {
 	}
 
 	@PostMapping("/detallePedido")
-	public String detallePedido(Model model, HttpSession session, Persona persona, CabeceraPedido cabecera) {
-
+	public String detallePedido(Model model, HttpSession session, Persona persona, CabeceraPedido cabecera,
+			Cliente cliente) {
+		int cantidadComprar = 0;
+		int stockProducto = 0;
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
 		@SuppressWarnings("unchecked")
 		ArrayList<Producto> listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
-		for (Producto producto : listaCarrito) {
-			try {
-				deSer.actualizarStock(producto.getId(), producto.getCantidad());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		for (Producto producto2 : listaCarrito) {
+			cantidadComprar = producto2.getCantidad();
+			stockProducto = producto2.getStock();
 		}
-		model.addAttribute("listaCarrito", listaCarrito);
-		int sumaTotal = (int) session.getAttribute("sumaTotal");
-		model.addAttribute("sumaTotal", sumaTotal);
-		persona = (Persona) session.getAttribute("nombre");
-		System.out.println("esto es el id de la persona y el cliente: " + persona.getId());
 		try {
-			caSer.insertCabeceraPedido(persona.getId(), sumaTotal);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			logger.warn("pedido no realizado");
+			cliente = cliService.buscarClienteId(persona.getId());
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		int sumaTotal = (int) session.getAttribute("sumaTotal");
+		double saldoCliente = cliente.getSaldo();
+		System.out.println("esto es la lista del carritos "+listaCarrito);
+		if (!listaCarrito.isEmpty()) {
+			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0) {
+				for (Producto producto : listaCarrito) {
+					try {
+
+						deSer.actualizarStock(producto.getId(), producto.getCantidad());
+
+					} catch (Exception e) {
+						logger.warn("Stock no actualizado");
+						e.printStackTrace();
+					}
+				}
+				model.addAttribute("listaCarrito", listaCarrito);
+				int sumaTotal2 = (int) session.getAttribute("sumaTotal");
+				model.addAttribute("sumaTotal", sumaTotal2);
+				persona = (Persona) session.getAttribute("nombre");
+				try {
+					caSer.insertCabeceraPedido(persona.getId(), sumaTotal);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					logger.warn("pedido no realizado");
+				}
+
+				try {
+					cabecera = caSer.consultaUltimoIdCabecera();
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.warn("id de cliente no encontrado");
+				}
+				for (Producto producto : listaCarrito) {
+					try {
+						deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
+								producto.getPrecioUnitarioSinIva() * producto.getCantidad());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} else {
+				@SuppressWarnings("unchecked")
+				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+				model.addAttribute("carrito", listaCarrito2);
+				return "app/alertStock";
+			}
+		} else {
+			return "redirect:/clientes";
+
 		}
 
-		try {
-			cabecera = caSer.consultaUltimoIdCabecera();
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.warn("id de cliente no encontrado");
-		}
-		System.out.println("esto es el id de la cabecera " + cabecera.getId());
-		for (Producto producto : listaCarrito) {
-			try {
-				deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
-						producto.getPrecioUnitarioSinIva() * producto.getCantidad());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	
-		logger.info("Vista de los detalles del pedido: "+persona.getNombre());
+		logger.info("Vista de los detalles del pedido: " + persona.getNombre());
 
 		return "app/listaPedidoCarrito";
 
@@ -336,12 +362,12 @@ public class ClienteController {
 		persona = (Persona) session.getAttribute("nombre");
 		ArrayList<CabeceraPedido> mostrarCabecera = null;
 		try {
-		 mostrarCabecera = caSer.mostrarCabeceraPedido(persona.getId());		
+			mostrarCabecera = caSer.mostrarCabeceraPedido(persona.getId());
 		} catch (Exception e) {
 			logger.warn("Cabecera no encontrada");
 		}
 		model.addAttribute("cabeceraPedido", mostrarCabecera);
-		System.out.println("este ees el array list de cabecera: "+mostrarCabecera);
+		System.out.println("este ees el array list de cabecera: " + mostrarCabecera);
 		return "app/misPedidos";
 
 	}
@@ -360,7 +386,7 @@ public class ClienteController {
 				System.out.println("esto es el id de la cabecera producto: " + detallePedido2.getId());
 			}
 			for (DetallePedido detallePedido2 : detallePedido) {
-				System.out.println("id de la cabecera "+detallePedido2.getCabeceraPedido().getId());
+				System.out.println("id de la cabecera " + detallePedido2.getCabeceraPedido().getId());
 			}
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
@@ -382,26 +408,28 @@ public class ClienteController {
 		return "redirect:/clientes";
 
 	}
-	
+
 	@PostMapping("/devolucionParcial")
 	public String devolucionParcial(@RequestParam(name = "idCabecera") String idCabecera,
-			@RequestParam(name = "idLineaProducto") String idLineaProducto,Persona persona,HttpSession session) {
-	
+			@RequestParam(name = "idLineaProducto") String idLineaProducto, Persona persona, HttpSession session) {
+
 		persona = (Persona) session.getAttribute("nombre");
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
-			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial", "devolucionParcial",
-					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2="+idCabecera+"", 0, 0);
+			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial",
+					"devolucionParcial",
+					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
+					0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
-		
+
 		return "redirect:/clientes";
-		
+
 	}
 
 	@PostMapping("/registro")
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
-			ModelMap modelo,HttpSession session) {
+			ModelMap modelo, HttpSession session) {
 		modelo.addAttribute("persona", persona);
 		modelo.addAttribute("registro", true);
 		System.out.println(resultado);
@@ -509,7 +537,7 @@ public class ClienteController {
 	public String verPerfil(@PathVariable int id, HttpSession session, Persona persona, Model model, Cliente cliente) {
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
-		System.out.println("esto es el id :"+id);
+		System.out.println("esto es el id :" + id);
 		try {
 			cliente = cliService.buscarClienteId(id);
 		} catch (Exception e) {
@@ -521,15 +549,14 @@ public class ClienteController {
 		return "app/perfilCliente";
 
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/editarUsuario/cambiarPassword")
-	public ResponseEntity cambiarPasswordPost(@Valid @RequestBody ChangePasswordForm form,Errors errors) {
+	public ResponseEntity cambiarPasswordPost(@Valid @RequestBody ChangePasswordForm form, Errors errors) {
 		try {
-			if(errors.hasErrors()) {
-				String result = errors.getAllErrors()
-                        .stream().map(x -> x.getDefaultMessage())
-                        .collect(Collectors.joining(""));
+			if (errors.hasErrors()) {
+				String result = errors.getAllErrors().stream().map(x -> x.getDefaultMessage())
+						.collect(Collectors.joining(""));
 
 				throw new Exception(result);
 			}
@@ -538,8 +565,7 @@ public class ClienteController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 		return ResponseEntity.ok("Success");
-		
+
 	}
-	
 
 }

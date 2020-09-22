@@ -18,10 +18,6 @@ public class PersonaRepositorio {
 		Session session = entityManager.unwrap(Session.class);
 		String hQuery = "from Persona p " + " where p.id = :id";
 		Persona p = session.createQuery(hQuery, Persona.class).setParameter("id", id).setMaxResults(1).uniqueResult();
-		return p;
-		
-		
+		return p;	
 	}
-	
-
 }

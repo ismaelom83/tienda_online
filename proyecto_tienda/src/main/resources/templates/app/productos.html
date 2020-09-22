@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-	<title>Tioenda Online</title>
+	<title>Tienda Online</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -37,7 +37,7 @@
 					</div>
 					<div>
 						<form th:action="@{/app/carrito/{id}(id=${productomodel.id})}" method="get">
-							<label>NºProductos</label><br> <input type="number" name="cantidad" value="1"
+							<label>NºProductos</label><br> <input type="number" min="1" name="cantidad" value="1"
 								width="30px"><br>
 							<button type="submit" class="btn btn-lg btn-success btn-product">Añadir
 								a la cesta</button>

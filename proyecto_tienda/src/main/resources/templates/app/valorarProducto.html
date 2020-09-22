@@ -45,9 +45,9 @@
 			<form method="POST" th:action="@{/valorarProducto/{id}(id=${productomodel.id})}">
 				<div class="form-group">
 					<label for="puntuacion">Puntua producto</label>
-					<select class="form-control" name="puntuacion">
+					<select class="form-control" name="puntuacion" required>
 						<option>Puntua producto</option>
-						<option>1</option>
+						<option selected="true">1</option>
 						<option>2</option>
 						<option>3</option>
 						<option>4</option>
@@ -56,7 +56,7 @@
 				</div>
 				<div class="form-group">
 					<label for="valorarDescripcion">Escriba una reseña</label>
-					<textarea class="form-control"  placeholder="Escriba una Reseña" name="valorarDescripcion"
+					<textarea class="form-control" required  placeholder="Escriba una Reseña" name="valorarDescripcion"
 						rows="3"></textarea>
 					<br>
 					<button type="submit" class="btn btn-lg btn-success btn-product">
