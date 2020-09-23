@@ -24,7 +24,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 			// cualquiera que tenga la ruta resources tiene aceso
 			.antMatchers(resources).permitAll()
 			// cualquiera tiene acceso al index principal
-			.antMatchers("/", "/index", "/registro","/prueba","/app/carrito/{id}","/app/productos/{id}","/controllerFiltro","/controllerFiltroClientes","/borrarCarrito/{id}").permitAll()
+			.antMatchers("/", "/index", "/registro","/prueba","/app/carrito/{id}","/app/productos/{id}","/controllerFiltro","/controllerFiltroClientes","/borrarCarrito/{id}","/carrito").permitAll()
 			// cualquier request necesitara autentificacion
 			.anyRequest().authenticated().and().formLogin()
 			// esta es la pagina que utilizamos en el login que esta permitida la entrada a

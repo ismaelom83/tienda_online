@@ -38,7 +38,7 @@
 					<div>
 						<form th:action="@{/app/carrito/{id}(id=${productomodel.id})}" method="get">
 							<label>NºProductos</label><br> <input type="number" min="1" name="cantidad" value="1"
-								width="30px"><br>
+								width="30px" required><br>
 							<button type="submit" class="btn btn-lg btn-success btn-product">Añadir
 								a la cesta</button>
 						</form>

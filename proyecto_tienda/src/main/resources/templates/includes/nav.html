@@ -15,6 +15,7 @@
 					Mensaje</a></li>
 					<li sec:authorize="isAuthenticated()"> <a href="" class="nav-item active nav-link" data-toggle="modal"
 						data-target="#changePasswordModal">CambiarPassword</a></li>
+							<li sec:authorize="isAuthenticated()"> <a th:href="@{/recargarSaldo}" class="nav-item active nav-link">RecargarSaldo</a></li>
 					
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

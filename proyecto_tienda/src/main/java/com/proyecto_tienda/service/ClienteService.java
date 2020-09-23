@@ -22,4 +22,6 @@ public interface ClienteService {
 	Persona cambiarPassword(ChangePasswordForm ch)throws Exception;
 	
 	void actualizarSaldoCliente(int id, double cantidad) throws Exception;
+	
+	void recargarSaldoCliente(int id, double cantidad) throws Exception;
 }

@@ -89,4 +89,10 @@ public class ClienteServiceImp implements ClienteService {
 		cliRepo.actualizarSaldoCliente(id, cantidad);
 	}
 
+	@Override
+	public void recargarSaldoCliente(int id, double cantidad) throws Exception {
+		cliRepo.recargarSaldoCliente(id, cantidad);
+		
+	}
+
 }

@@ -216,10 +216,20 @@ public class ClienteController {
 			session.setAttribute("carrito", listaCarrito);
 		}
 
-		if (listaCarrito != null) {
+		Long idProducto = null;
+
+		for (Producto producto2 : listaCarrito) {
+			if (producto2.getId() == producto.getId() && cantidad!=null) {
+				idProducto = producto2.getId();
+				producto2.setCantidad(Integer.parseInt(cantidad) + producto2.getCantidad());
+			}
+		}
+
+		if (listaCarrito != null && idProducto != producto.getId()) {
 			listaCarrito.add(producto);
 			logger.info("producto añadido al carrito con exito");
 		}
+		
 
 		for (Producto pro : listaCarrito) {
 			sumaTotal += pro.getPrecioUnitarioSinIva() * pro.getCantidad();
@@ -228,21 +238,26 @@ public class ClienteController {
 		sumaTotal = (int) session.getAttribute("sumaTotal");
 		model.addAttribute("sumaTotal", sumaTotal);
 		model.addAttribute("carrito", listaCarrito);
-
-		return "app/carrito";
+		cantidad=null;
+		return "redirect:/carrito";
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/carrito")
 	public String carrito2(Model model, HttpSession session, Producto producto) {
-
 		ArrayList<Producto> listaCarrito = null;
 		listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
-//		int sumaTotal = (int) session.getAttribute("sumaTotal");
 		model.addAttribute("carrito", listaCarrito);
-//		model.addAttribute("sumaTotal", sumaTotal);
+	
+		int sumaTotal =0;
+		if (session.getAttribute("sumaTotal")!=null) {
+			 sumaTotal =(int) session.getAttribute("sumaTotal");	
+				model.addAttribute("sumaTotal", sumaTotal);
+		}
 
+		
+		
 		return "app/carrito";
 	}
 
@@ -250,6 +265,7 @@ public class ClienteController {
 	@GetMapping("/borrarCarrito/{id}")
 	public String borrarCarrito(@PathVariable Long id, Producto producto, HttpSession session, Model model) {
 
+		int sumaTotal = 0;
 		ArrayList<Producto> listaCarrito = null;
 		listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
 		for (Producto producto2 : listaCarrito) {
@@ -269,8 +285,18 @@ public class ClienteController {
 			model.addAttribute("carrito", listaCarrito);
 		}
 		
-		Persona persona = (Persona) session.getAttribute("nombre");
-		logger.info("Carrito borrado con exito");
+		System.out.println("la cantidad de producto "+producto.getCantidad());
+		
+		
+		if (session.getAttribute("sumaTotal")!=null) {
+			sumaTotal = (int) session.getAttribute("sumaTotal");
+			int lineaSuma = producto.getCantidad()*producto.getPrecioUnitarioSinIva();
+			int sumaTotalFinal = sumaTotal-lineaSuma; 
+			model.addAttribute("sumaTotal", sumaTotalFinal);
+			logger.info("Producto borrado del carrito con exito");
+		}
+
+		
 		return "app/carrito";
 
 	}
@@ -354,7 +380,7 @@ public class ClienteController {
 					model.addAttribute("saldoCuenta", saldoCliente);
 					return "app/alertSaldo";
 				}
-				
+
 			}
 		} else {
 			return "redirect:/clientes";
@@ -370,11 +396,8 @@ public class ClienteController {
 	@GetMapping("/borrarCarrito")
 	public String borrarCarrito(HttpSession session) {
 		int suma = (int) session.getAttribute("sumaTotal");
-		System.out.println("antes de borrar" + suma);
 		session.removeAttribute("carrito");
 		session.removeAttribute("sumaTotal");
-		System.out.println("despues de borrar" + suma);
-
 		return "redirect:/clientes";
 	}
 
@@ -388,7 +411,6 @@ public class ClienteController {
 			logger.warn("Cabecera no encontrada");
 		}
 		model.addAttribute("cabeceraPedido", mostrarCabecera);
-		System.out.println("este ees el array list de cabecera: " + mostrarCabecera);
 		return "app/misPedidos";
 
 	}
@@ -404,10 +426,9 @@ public class ClienteController {
 				total += detallePedido2.getTotalLinea();
 			}
 			for (DetallePedido detallePedido2 : detallePedido) {
-				System.out.println("esto es el id de la cabecera producto: " + detallePedido2.getId());
 			}
 			for (DetallePedido detallePedido2 : detallePedido) {
-				System.out.println("id de la cabecera " + detallePedido2.getCabeceraPedido().getId());
+
 			}
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
@@ -453,7 +474,6 @@ public class ClienteController {
 			ModelMap modelo, HttpSession session) {
 		modelo.addAttribute("persona", persona);
 		modelo.addAttribute("registro", true);
-		System.out.println(resultado);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido");
@@ -517,7 +537,6 @@ public class ClienteController {
 		model.addAttribute("listaValoraciones", listaProducto);
 
 		for (ValoracionesProducto valoracionesProducto : listaProducto) {
-			System.out.println("esto es la lista del producto" + valoracionesProducto.getNombre_persona());
 		}
 
 		return "app/productos";
@@ -559,7 +578,6 @@ public class ClienteController {
 	public String verPerfil(@PathVariable int id, HttpSession session, Persona persona, Model model, Cliente cliente) {
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
-		System.out.println("esto es el id :" + id);
 		try {
 			cliente = cliService.buscarClienteId(id);
 		} catch (Exception e) {
@@ -589,5 +607,49 @@ public class ClienteController {
 		return ResponseEntity.ok("Success");
 
 	}
+	
+	
+	@GetMapping("/recargarSaldo")
+	public String recargarSaldoGet(Model model, HttpSession session,Persona persona,Cliente cliente) {
+		
+		persona = (Persona) session.getAttribute("nombre");
+		
+		try {
+			cliente = cliService.buscarClienteId(persona.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("nombreCliente", cliente);
+		
+		return "app/recargarSaldo";
+		
+	}
+	
+	@PostMapping("/recargarSaldo")
+	public String recargarSaldoPost(@RequestParam(name = "saldoNuevo") String saldoNuevo,Persona persona,
+			Cliente cliente, HttpSession session,Model model) {
+		
+		
+	persona = (Persona) session.getAttribute("nombre");
+		
+		try {
+			cliente = cliService.buscarClienteId(persona.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			cliService.recargarSaldoCliente(cliente.getId(), Integer.parseInt(saldoNuevo));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/clientes";
+		
+	}
+	
 
 }
