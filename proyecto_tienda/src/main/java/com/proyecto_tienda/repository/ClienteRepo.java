@@ -87,4 +87,14 @@ public class ClienteRepo {
 		
 	}
 	
+	public void actualizarSaldoCliente(int id, double cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Cliente p set p.saldo=p.saldo - '" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
+	
 }

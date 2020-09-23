@@ -263,7 +263,12 @@ public class ClienteController {
 		}
 		session.setAttribute("carrito", listaCarrito);
 		listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
-		model.addAttribute("carrito", listaCarrito);
+		if (listaCarrito.isEmpty()) {
+			session.removeAttribute("carrito");
+		} else {
+			model.addAttribute("carrito", listaCarrito);
+		}
+		
 		Persona persona = (Persona) session.getAttribute("nombre");
 		logger.info("Carrito borrado con exito");
 		return "app/carrito";
@@ -290,7 +295,6 @@ public class ClienteController {
 		}
 		int sumaTotal = (int) session.getAttribute("sumaTotal");
 		double saldoCliente = cliente.getSaldo();
-		System.out.println("esto es la lista del carritos "+listaCarrito);
 		if (!listaCarrito.isEmpty()) {
 			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0) {
 				for (Producto producto : listaCarrito) {
@@ -325,15 +329,32 @@ public class ClienteController {
 						deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
 								producto.getPrecioUnitarioSinIva() * producto.getCantidad());
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
+				try {
+					cliService.actualizarSaldoCliente(cliente.getId(), sumaTotal);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				session.removeAttribute("carrito");
 			} else {
-				@SuppressWarnings("unchecked")
-				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
-				model.addAttribute("carrito", listaCarrito2);
-				return "app/alertStock";
+				if (stockProducto - cantidadComprar < 0) {
+					@SuppressWarnings("unchecked")
+					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+					model.addAttribute("carrito", listaCarrito2);
+					return "app/alertStock";
+				}
+				if (saldoCliente - sumaTotal < 0) {
+					@SuppressWarnings("unchecked")
+					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+					model.addAttribute("carrito", listaCarrito2);
+					int sumaTotal2 = (int) session.getAttribute("sumaTotal");
+					model.addAttribute("sumaTotal", sumaTotal2);
+					model.addAttribute("saldoCuenta", saldoCliente);
+					return "app/alertSaldo";
+				}
+				
 			}
 		} else {
 			return "redirect:/clientes";
@@ -442,7 +463,7 @@ public class ClienteController {
 				modelo.addAttribute("persona", persona);
 				traSer.registrarPersona(persona);
 				persona = cliService.consultaUltimoCliente();
-				cliService.registrarClientes(persona.getId(), 1000, 1000, "normal");
+				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 			} catch (Exception e) {
 				modelo.addAttribute("mensajeError", e.getMessage());
 			}
@@ -474,6 +495,7 @@ public class ClienteController {
 				logger.error("Categoria no encontrada");
 			}
 		}
+		model.addAttribute("passwordForm", new ChangePasswordForm());
 		model.addAttribute("listaProductos", filtroProducto);
 		return "app/clientes";
 

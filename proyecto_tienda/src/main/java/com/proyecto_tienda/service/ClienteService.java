@@ -20,4 +20,6 @@ public interface ClienteService {
 	Cliente buscarClienteId(int id) throws Exception;
 	
 	Persona cambiarPassword(ChangePasswordForm ch)throws Exception;
+	
+	void actualizarSaldoCliente(int id, double cantidad) throws Exception;
 }
