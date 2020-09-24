@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.proyecto_tienda.dto.ChangePasswordForm;
 import com.proyecto_tienda.model.CabeceraPedido;
 import com.proyecto_tienda.model.CategoriasMenu;
+import com.proyecto_tienda.model.Cliente;
 import com.proyecto_tienda.model.DetallePedido;
 import com.proyecto_tienda.model.Mensajeria;
 import com.proyecto_tienda.model.Persona;
@@ -79,6 +80,25 @@ public class TrabajadorController {
 	public String trabajadorVentas(HttpSession session, Persona persona, Model model) {
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
+		ArrayList<CategoriasMenu> listaCategorias = null;
+		try {
+			listaCategorias = catService.buscarCategoria();
+		} catch (Exception e1) {
+			logger.error("Lista de productos no encontrada");
+			e1.printStackTrace();
+		}
+		
+		model.addAttribute("listaCategorias", listaCategorias);
+		persona = (Persona) session.getAttribute("nombre");
+		model.addAttribute("nombre", persona);
+		List<Producto> listaProductos = null;
+		try {
+			listaProductos = pService.buscarTodosProductos();
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error("Lista de productos no encontrada: " + persona.getNombre());
+		}
+		model.addAttribute("listaProductos2", listaProductos);
 		return "app/trabajadorVentas";
 
 	}
@@ -375,6 +395,7 @@ public class TrabajadorController {
     		@RequestParam("precioUnitarioSinIva") String precioUnitarioSinIva,
     		@RequestParam("stock") String stock,
     		@RequestParam("id") String id,
+    		@RequestParam("descuento") String descuento,
     		Model model) throws IOException{
 	 
 	 Producto prod = pService.buscarProductoId(Long.parseLong(id));
@@ -382,6 +403,7 @@ public class TrabajadorController {
 	 prod.setDescripcion(descripcion);
 	 prod.setPrecioUnitarioSinIva(Integer.parseInt(precioUnitarioSinIva));
 	 prod.setStock(Integer.parseInt(stock));
+	 prod.setDescuento(Byte.parseByte(descuento));
 	 System.out.println("el stock nuevo " +prod.getStock());
 	 if (!file.isEmpty()) {
 		 String folder= "./src/main/resources/static/img/";
@@ -456,6 +478,42 @@ public class TrabajadorController {
 			e.printStackTrace();
 		}
 		return "redirect:/administrador";
+	}
+	
+	@GetMapping("/descuentoProductos")
+	public String descuentoProductos() {
+		
+		return "app/descuentoProductos";
+		
+	}
+	
+	@PostMapping("/productoCangeable")
+	public String productoCangeable(@RequestParam(name = "idProducto") String idProducto,
+			@RequestParam(name = "puntosCangeable") String puntosCangeable,Persona persona,
+			Cliente cliente,Producto producto, HttpSession session,Model model) {
+		
+	 try {
+		producto =	pService.buscarProductoId(Long.parseLong(idProducto));
+	} catch (NumberFormatException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	 System.out.println("id "+idProducto);
+	 System.out.println("puntos "+puntosCangeable);
+		try {
+			pService.actualizarPuntosCangeable(Long.parseLong(idProducto), Integer.parseInt(puntosCangeable));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return "redirect:/trabajadorVentas";
+		
 	}
 
 }

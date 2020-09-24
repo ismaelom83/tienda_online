@@ -112,7 +112,7 @@
 						</div>
 
 						<a class="cart" th:href="@{/app/productos/{id}(id=${producto.id})}">
-							<span class="price" th:text="${producto.precioUnitarioSinIva}">euros</span><span
+							<span class="price" th:text="${'Precio '+producto.precioUnitarioSinIva+'€'+' Descuento '+producto.descuento+'%'}"></span><span
 								class="add-to-cart"><span class="txt">Ver Producto</span>
 							</span>
 						</a>

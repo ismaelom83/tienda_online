@@ -63,7 +63,7 @@
 									</div>
 								</div>
 							</td>
-							<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva}">
+							<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
 								</strong>
 							<td id="cantidad1" class="text-left"><strong th:text="${carrito.cantidad}">
 
@@ -82,7 +82,7 @@
 						<td class="text-right">
 							<h3>
 								<div th:if="${sumaTotal !=null}">
-									<strong th:text="${sumaTotal}">
+									<strong th:text="${sumaTotal +'€'}">
 									</strong>
 								</div>
 

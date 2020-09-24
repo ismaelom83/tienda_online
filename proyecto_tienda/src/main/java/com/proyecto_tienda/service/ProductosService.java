@@ -17,6 +17,8 @@ public interface ProductosService {
     ArrayList<Producto> buscarPructoCaregoria(String categoria) throws IOException;
     
     void save(Producto producto) throws Exception;
+    
+    void actualizarPuntosCangeable(Long id, int cantidad) throws Exception;
      
     
 }

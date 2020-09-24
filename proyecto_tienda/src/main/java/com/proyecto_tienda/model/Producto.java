@@ -59,6 +59,9 @@ public class Producto implements Serializable {
 	//bi-directional one-to-one association to ValoracionesProducto
 	@OneToOne(mappedBy="producto")
 	private ValoracionesProducto valoracionesProducto;
+	
+	@Column(name="puntos")
+	private int puntos;
 
 	public Producto() {
 	}
@@ -149,6 +152,16 @@ public class Producto implements Serializable {
 
 	public void setDetallePedidos(List<DetallePedido> detallePedidos) {
 		this.detallePedidos = detallePedidos;
+	}
+	
+	
+
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntosCangeable) {
+		this.puntos = puntosCangeable;
 	}
 
 	public DetallePedido addDetallePedido(DetallePedido detallePedido) {

@@ -15,19 +15,23 @@
 <body>
 	<div class="container">
 		<form th:action="@{/modificarProducto}" method="post" enctype="multipart/form-data">
-
+			<fieldset>
 			<div class="form-group">
 				Descripcion
 				<input name="descripcion" type="text" class="form-control" th:value="${prod.descripcion}" required>
 			</div>
 			<div class="form-group">
 				Precio/ud
-				<input name="precioUnitarioSinIva" type="text" class="form-control"
+				<input name="precioUnitarioSinIva" type="number" class="form-control"
 					th:value="${prod.precioUnitarioSinIva}" required>
 			</div>
 			<div class="form-group">
 				Stock
-				<input name="stock" type="text" class="form-control" th:value="${prod.stock}" required>
+				<input name="stock" type="number" class="form-control" th:value="${prod.stock}" required>
+			</div>
+				<div class="form-group">
+				cambiar descuento
+				<input name="descuento" min="0" max="70" type="number" class="form-control" th:value="${prod.descuento}" required>
 			</div>
 			<div class="form-group">
 				<input type="file" id="file" name="file" style="display:none;">
@@ -42,6 +46,7 @@
 				<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-product-hunt"></i>
 					ActualizarProducto</button>
 			</div>
+			</fieldset>
 		</form>
 	</div>
 

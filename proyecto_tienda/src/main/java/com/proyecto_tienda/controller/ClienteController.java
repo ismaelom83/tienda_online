@@ -206,7 +206,7 @@ public class ClienteController {
 			producto = pService.buscarProductoId(id);
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error("Productos no encontrado");
+			logger.error("Producto no encontrado");
 		}
 		producto.setCantidad(Integer.parseInt(cantidad));
 		ArrayList<Producto> listaCarrito = null;
@@ -232,7 +232,9 @@ public class ClienteController {
 		
 
 		for (Producto pro : listaCarrito) {
-			sumaTotal += pro.getPrecioUnitarioSinIva() * pro.getCantidad();
+		int	descuento = pro.getPrecioUnitarioSinIva()*pro.getDescuento()/100;
+		int precioFinal = pro.getPrecioUnitarioSinIva()-descuento;
+			sumaTotal += precioFinal * pro.getCantidad();
 		}
 		session.setAttribute("sumaTotal", sumaTotal);
 		sumaTotal = (int) session.getAttribute("sumaTotal");

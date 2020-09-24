@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,16 @@ public class ProductoRepo{
 //			System.out.println("credenciales no validas");
 		}
 		return null;
+	}
+	
+	public void actualizarPuntosCangeable(Long id, int cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Producto p set p.puntos=p.puntos + '" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
 	}
 
 

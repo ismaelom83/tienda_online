@@ -43,5 +43,11 @@ public class ProductosServiceImp implements ProductosService {
 		pRepo.save(producto);
 	}
 
+	@Override
+	public void actualizarPuntosCangeable(Long id, int cantidad) throws Exception {
+		pRepo.actualizarPuntosCangeable(id, cantidad);
+		
+	}
+
 
 }

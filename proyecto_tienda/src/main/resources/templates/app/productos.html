@@ -32,18 +32,19 @@
 					<br>
 					<div class="pull-right">
 						<h4>
-							<strong th:text="${productomodel.precioUnitarioSinIva}"></strong>
+							<strong th:text="${'Precio '+productomodel.precioUnitarioSinIva+'€'}"></strong><br>
+							<span th:text="${'Descuento '+productomodel.descuento+'%'}"></span>
 						</h4>
 					</div>
 					<div>
 						<form th:action="@{/app/carrito/{id}(id=${productomodel.id})}" method="get">
-							<label>NºProductos</label><br> <input type="number" min="1" name="cantidad" value="1"
-								width="30px" required><br>
+							<label>NºProductos</label><br> <input style="width: 50px" type="number" min="1" name="cantidad" value="1"
+								width="30px" required><br><br>
 							<button type="submit" class="btn btn-lg btn-success btn-product">Añadir
 								a la cesta</button>
 						</form>
+						<br><br>
 					</div>
-					<br> <br>
 					<form sec:authorize="isAuthenticated()" th:action="@{/clientes}" method="get">
 						<button type="submit" class="btn btn-lg btn-primary btn-product">
 							VOLVER</button>
@@ -61,7 +62,7 @@
 	<br>
 	<h1 class="titulo-valoraciones">Valoraciones de los clientes</h1>
 	<br>
-	<div class="lista-valoraciones" th:each="lista: ${listaValoraciones}">
+	<div  class="lista-valoraciones" th:each="lista: ${listaValoraciones}">
 		<div class="cuerpo-valoraciones">
 			<h4 th:text="${'Valorado por: '+lista.nombre_persona}"></h4>
 			<h3 th:text="${'puntuacion del articulo: '+lista.valoracion}"></h3>
