@@ -118,10 +118,19 @@ public class TrabajadorController {
 	}
 
 	@GetMapping("/ControllerDevolverTotal")
-	public String devolver(@RequestParam String id) {
+	public String devolver(@RequestParam String id,CabeceraPedido cabecera) {
+		
+	cabecera =	cabeService.buscarIdDetalleCabecera(Integer.parseInt(id));
+
 		try {
 			deService.borrarPedido(Integer.parseInt(id));
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			cliService.recargarSaldoCliente(cabecera.getCliente().getId(), cabecera.getImporteTotal());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		menService.borrarMensajeDevolucion(Integer.parseInt(id));
@@ -130,10 +139,22 @@ public class TrabajadorController {
 	}
 	
 	@GetMapping("/ControllerDevolverParcial")
-	public String devolverParcial(@RequestParam String id,@RequestParam String id2) {
+	public String devolverParcial(@RequestParam String id,@RequestParam String id2,CabeceraPedido cabecera, DetallePedido detalle2 ) {
 		
+		cabecera = cabeService.buscarIdDetalleCabecera(Integer.parseInt(id2));
+		      try {
+				detalle2 =     deService.buscarId(Integer.parseInt(id));
+			} catch (NumberFormatException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	
 		
 		try {
+			
 			deService.borrarLineaPedido(Integer.parseInt(id));
 			
 		DetallePedido detalle =	deService.buscarIdDetalleBorrar(Integer.parseInt(id2));
@@ -148,6 +169,39 @@ public class TrabajadorController {
 			logger.error("Linea de pedido no encontrada");
 			e.printStackTrace();
 		}
+		
+		int total = 0;
+		ArrayList<DetallePedido> detallePedido = null;
+		try {
+			detallePedido = deService.mostrarLineasPedido(Integer.parseInt(id2));
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (DetallePedido detallePedido2 : detallePedido) {
+			total += detallePedido2.getTotalLinea();
+		}
+		
+		try {
+			cabeService.actualizarTotalFactura(Integer.parseInt(id2), total);
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			cliService.recargarSaldoCliente(cabecera.getCliente().getId(), detalle2.getTotalLinea());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		menService.borrarMensajeDevolucion(Integer.parseInt(id));
 		return "redirect:/devolverPedido";
 	}
@@ -230,24 +284,15 @@ public class TrabajadorController {
 	@GetMapping("/generarFactura/{id}")
 	public String generarFactura(@PathVariable int id,HttpSession session, HttpServletResponse response) {
 
-		
-		
 		if (session.getAttribute("nombre") != null) {
-			System.out.println("hola1");
-			DetallePedido dp = cabeService.buscarIdDetalle(id);
-			
+			DetallePedido dp = cabeService.buscarIdDetalle(id);		
 			CabeceraPedido cp = cabeService.buscarIdDetalleCabecera(dp.getCabeceraPedido().getId());
 
 //			if (cp != null && cp.getCliente().getId() == (int) session.getAttribute("nombre")) {
-				System.out.println("hola2");
 				File bill = new FacturaWriter().escribirFactura(cp);
-
 				response.setHeader("Content-Disposition", String.format("attachment;filename=\"%s\"", bill.getName()));
-
 				try {
-
 					OutputStream out = response.getOutputStream();
-					// response.setContentType(message.getTipoAdjunto());
 					InputStream is = new FileInputStream(bill);
 					IOUtils.copy(is, out);
 					out.flush();
@@ -268,7 +313,7 @@ public class TrabajadorController {
 //			}
 
 		}
-		System.out.println("hola3");
+
 		return "redirect:/trabajadorCompras";
 		
 	}
@@ -280,6 +325,10 @@ public class TrabajadorController {
 		ArrayList<DetallePedido> detalle2 = deService.mostrarLineasPedido(id);
 		for (DetallePedido detallePedido : detalle2) {
 			lProductos += detallePedido.getTotalLinea();
+		}
+		for (DetallePedido detallePedido : detalle2) {
+		int detalle =	detallePedido.getId();
+		model.addAttribute("idDetalle", detalle);
 		}
 		model.addAttribute("totalLinea2", lProductos);
 		model.addAttribute("lineaDetalle", detalle2);
@@ -492,6 +541,7 @@ public class TrabajadorController {
 			@RequestParam(name = "puntosCangeable") String puntosCangeable,Persona persona,
 			Cliente cliente,Producto producto, HttpSession session,Model model) {
 		
+		
 	 try {
 		producto =	pService.buscarProductoId(Long.parseLong(idProducto));
 	} catch (NumberFormatException e) {
@@ -506,12 +556,38 @@ public class TrabajadorController {
 		try {
 			pService.actualizarPuntosCangeable(Long.parseLong(idProducto), Integer.parseInt(puntosCangeable));
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		try {
+			byte cangeableONo = 1;
+			pService.actualizarCangeable(Long.parseLong(idProducto), cangeableONo);
+		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+		return "redirect:/trabajadorVentas";
+		
+	}
+	
+	@PostMapping("/cambiarDescuento")
+	public String cambiarDescuento(@RequestParam(name = "idProducto") String idProducto,
+			@RequestParam(name = "descuentoActual") String descuentoActual, @RequestParam(name = "nuevoDescuento") String nuevoDescuento) {
+	
+		 try {
+			pService.actualizarDescuento(Long.parseLong(idProducto), Byte.parseByte(nuevoDescuento));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return "redirect:/trabajadorVentas";
 		
 	}

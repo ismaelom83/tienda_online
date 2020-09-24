@@ -90,6 +90,7 @@
 										<th>Precio</th>
 										<th>Stock</th>
 										<th>Descuento</th>
+										<th>Cangeable</th>
 										<th>Categoria</th>
 										<th></th>
 									</tr>
@@ -100,9 +101,10 @@
 										<td th:text="${producto.precioUnitarioSinIva+'€'}"></td>
 										<td th:text="${producto.stock}"></td>
 										<td th:text="${producto.descuento+'%'}"></td>
+										<td th:text="${producto.canjeable}"></td>
 										<td th:text="${producto.categoria}"></td>
 										<td>
-											<a th:href="@{/editarProducto/{id}(id=${producto.id})}"><i
+											<a th:onclick="'javascript:cambiarDescuento('+ ${producto.id} +',' + ${producto.descuento} + ');'"><i
 													class="fas fa-percent"></i></a>
 											| <a href="#"
 												th:onclick="'javascript:cangeable(\''+ ${producto.id} +'\');'"><i
@@ -119,21 +121,20 @@
 	</div>
 
 	<div th:insert="modales/cangeable">...</div>
+	<div th:insert="modales/cambiarDescuento">...</div>
 		<script type="text/javascript">
 		function cangeable(id) {
 			$('#deleteModal2').modal('show');
 			$("#userIdHiddenInput2").val(id);
 		}
 
-		function borrarUsuario() {
-			var id = $("#userIdHiddenInput").val();
-			window.location = "eliminarProducto/" + id;
+		function cambiarDescuento(id,descuento) {
+				$('#cambiarDescuento').modal('show');
+			$("#idProductoDescuento").val(id);
+			$("#descuentoActual").val(descuento);
 		}
+		
 	</script>
-    
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script> -->
-    
+
 </body>
 </html>

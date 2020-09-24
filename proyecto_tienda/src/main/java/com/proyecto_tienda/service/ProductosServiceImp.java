@@ -49,5 +49,17 @@ public class ProductosServiceImp implements ProductosService {
 		
 	}
 
+	@Override
+	public void actualizarDescuento(Long id, byte cantidad) throws Exception {
+		pRepo.actualizarDescuento(id, cantidad);
+		
+	}
+
+	@Override
+	public void actualizarCangeable(Long id, byte cangeableONo) throws Exception {
+		pRepo.actualizarCangeable(id, cangeableONo);
+		
+	}
+
 
 }

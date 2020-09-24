@@ -77,6 +77,17 @@ public class CabeceraPedidoRepo {
 		
 	}
 	
+	public void actualizarTotalFactura(int id, int cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE CabeceraPedido cp set cp.importeTotal='" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
+
+	
 
 	
 	

@@ -15,4 +15,5 @@ public interface CabeceraPedidoService {
 	CabeceraPedido consultaUltimoIdCabecera() throws EntityNotFoundException,IOException;
 	DetallePedido buscarIdDetalle(int idCabecera);
 	CabeceraPedido buscarIdDetalleCabecera(int idCabecera);
+	void actualizarTotalFactura(int id, int cantidad) throws Exception;
 }

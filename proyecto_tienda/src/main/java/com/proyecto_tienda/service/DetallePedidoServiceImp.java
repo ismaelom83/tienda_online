@@ -50,4 +50,10 @@ public class DetallePedidoServiceImp implements DetallePedidoService {
 	 return	deRepo.buscarIdDetalleBorrar(idCabecera);
 	}
 
+	@Override
+	public DetallePedido buscarId(int idPedido) throws Exception {
+		
+		return deRepo.buscarId(idPedido);
+	}
+
 }

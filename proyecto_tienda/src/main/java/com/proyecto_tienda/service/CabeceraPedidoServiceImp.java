@@ -43,6 +43,12 @@ public class CabeceraPedidoServiceImp implements CabeceraPedidoService {
 		return caRepo.buscarIdDetalleCabecera(idCabecera);
 	}
 
+	@Override
+	public void actualizarTotalFactura(int id, int cantidad) throws Exception {
+		caRepo.actualizarTotalFactura(id, cantidad);
+		
+	}
+
 
 
 }

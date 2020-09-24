@@ -25,6 +25,7 @@
 						<th>Product</th>
 						<th class="text-center">Precio Unidad</th>
 						<th>Cantidad</th>
+						<th>Descuento Unidad</th>
 					</tr>
 				</thead>
 				<tbody th:each="carrito: ${listaCarrito}">
@@ -42,15 +43,12 @@
 								</div>
 							</div>
 						</td>
-						<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva}">
+						<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
 							</strong>
 						<td class="text-left"><strong th:text="${carrito.cantidad}">
-
 							</strong></td>
-
-						<!-- <td class="col-md-1"><a th:href="@{/borrarCarrito/{id}(id=${carrito.id})}"
-									class="btn btn-success"><span></span>Valorar Articulo
-								</a></td> -->
+								<td class="text-left"><strong th:text="${carrito.descuento+'%'}">
+							</strong></td>
 					</tr>
 				</tbody>
 				<tr>

@@ -13,4 +13,5 @@ public interface DetallePedidoService {
 	void borrarPedido(int id) throws Exception;
 	void borrarLineaPedido(int id) throws Exception;
 	DetallePedido buscarIdDetalleBorrar(int idCabecera) throws Exception;
+	DetallePedido buscarId(int idPedido) throws Exception;
 }

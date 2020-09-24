@@ -51,13 +51,15 @@
 										<td><strong>Producto</strong></td>
 										<td class="text-right"><strong>Precio</strong></td>
 										<td class="text-right"><strong>cantidad</strong></td>
+										<td class="text-right"><strong>Descuento Unidad</strong></td>
 
 									</tr>
 								</thead>		
 									<tr th:each="lineas: ${lineaDetalle}">
 										<td><span th:text="${lineas.producto.descripcion}"></span></td>
-										<td class="text-right"><span th:text="${lineas.producto.precioUnitarioSinIva}"></span></td>
+										<td class="text-right"><span th:text="${lineas.producto.precioUnitarioSinIva+'€'}"></span></td>
 										<td class="text-right"><span th:text="${lineas.producto.cantidad}"></span></td>
+										<td class="text-right"><span th:text="${lineas.producto.descuento+'%'}"></span></td>
 
 									</tr>
 								<tr>
@@ -70,9 +72,9 @@
 					</div>
 				</div>
 			</div>
-			<div th:each="lineas: ${lineaDetalle}">
+			<div>
 				<a th:href="@{/trabajadorCompras}" class="btn btn-success">Volver a Trabajador</a><br></br><br></br>
-			<a th:href="@{/generarFactura/{id}(id=${lineas.id})}" class="btn btn-primary">Generar factura PDF</a>
+			<a th:href="@{/generarFactura/{id}(id=${idDetalle})}" class="btn btn-primary">Generar factura PDF</a>
 			</div>
 			
 		</div>

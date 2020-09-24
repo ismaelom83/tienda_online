@@ -354,8 +354,10 @@ public class ClienteController {
 				}
 				for (Producto producto : listaCarrito) {
 					try {
+						int descuento = producto.getPrecioUnitarioSinIva()*producto.getDescuento()/100;
+						int descuentoFinal = producto.getPrecioUnitarioSinIva()-descuento;
 						deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
-								producto.getPrecioUnitarioSinIva() * producto.getCantidad());
+								descuentoFinal * producto.getCantidad());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -365,6 +367,9 @@ public class ClienteController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				
+				
 				session.removeAttribute("carrito");
 			} else {
 				if (stockProducto - cantidadComprar < 0) {
@@ -427,11 +432,7 @@ public class ClienteController {
 			for (DetallePedido detallePedido2 : detallePedido) {
 				total += detallePedido2.getTotalLinea();
 			}
-			for (DetallePedido detallePedido2 : detallePedido) {
-			}
-			for (DetallePedido detallePedido2 : detallePedido) {
-
-			}
+	
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
 		} catch (Exception e) {

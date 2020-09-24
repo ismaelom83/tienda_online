@@ -19,6 +19,10 @@ public interface ProductosService {
     void save(Producto producto) throws Exception;
     
     void actualizarPuntosCangeable(Long id, int cantidad) throws Exception;
+    
+    void actualizarDescuento(Long id, byte cantidad) throws Exception;
+    
+    void actualizarCangeable(Long id, byte cangeableONo) throws Exception;
      
     
 }

@@ -24,6 +24,8 @@
 							<th>Product</th>
 							<th class="text-center">Precio Unidad</th>
 							<th>Cantidad</th>
+							<th>Descuento Unidad</th>
+							
 						</tr>
 					</thead>
 					<tbody th:each="carrito: ${lineasPedido}">
@@ -41,9 +43,12 @@
 									</div>
 								</div>
 							</td>
-							<td class="col-md-1 text-center"><strong th:text="${carrito.producto.precioUnitarioSinIva}">
+							<td class="col-md-1 text-center"><strong th:text="${carrito.producto.precioUnitarioSinIva+'€'}">
 								</strong>
 							<td class="text-left"><strong th:text="${carrito.getCantidad()}">
+
+								</strong></td>
+								<td class="text-left"><strong th:text="${carrito.producto.descuento+'%'}">
 
 								</strong></td>
 

@@ -1,0 +1,29 @@
+<div class="modal fade" id="cambiarDescuento" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Cambio de descuento de un producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+	  </div>
+	  <form method="POST" th:action="@{/cambiarDescuento}">
+      <div class="modal-body">
+        <input type="hidden" id="idProductoDescuento" name="idProducto"/>
+	  </div>
+	         <div class="modal-body">
+			  este es el descuento actual
+        <input type="number" id="descuentoActual" readonly style="width: 50px" name="descuentoActual"/>
+      </div>
+	       <div class="modal-body">
+			   introduce el nuevo descuento
+        <input type="number" required min="1" max="70" style="width: 50px" id="" name="nuevoDescuento"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Aplicar Descuento</button>
+	  </div>
+	  </form>
+    </div>
+  </div>
+</div>

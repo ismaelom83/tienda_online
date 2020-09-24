@@ -99,6 +99,15 @@ public class DetallePedidoRepo {
 		
 	}
 	
+	public DetallePedido buscarId(int idPedido) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		String hQuery = "from DetallePedido dp " + " where dp.id = :id";
+		DetallePedido cabecera = session.createQuery(hQuery, DetallePedido.class)
+				.setParameter("id", idPedido).setMaxResults(1).uniqueResult();
+		return cabecera;
+		
+	}
+	
 	
 	
 }

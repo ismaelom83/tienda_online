@@ -70,7 +70,25 @@ public class ProductoRepo{
 		Session session = entityManager.unwrap(Session.class);
 		Transaction txn = session.beginTransaction();
 		Query updateQuery = session
-				.createQuery("UPDATE Producto p set p.puntos=p.puntos + '" + cantidad + "' where id='" + id + "'");
+				.createQuery("UPDATE Producto p set p.puntos='" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();	
+	}
+	
+	public void actualizarCangeable(Long id, byte cangeableONo) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Producto p set p.canjeable= '" + cangeableONo + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();	
+	}
+	
+	public void actualizarDescuento(Long id, byte cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Producto p set p.descuento='" + cantidad + "' where id='" + id + "'");
 		updateQuery.executeUpdate();
 		txn.commit();
 		
