@@ -92,23 +92,35 @@
 						</div>
 					</div>
 
-					<div class="box-down">
+							<div class="box-down">
 						<div class="h-bg">
 							<div class="h-bg-inner"></div>
 						</div>
 
 						<a class="cart" th:href="@{/app/productos/{id}(id=${producto.id})}">
-							<span class="price"
-								th:text="${'Precio '+producto.precioUnitarioSinIva+'€'}"></span><span
-								class="add-to-cart"><span class="txt">Ver Producto</span>
+							<div th:if="${producto.canjeable ==0}">
+								<span class="price" th:text="${'Precio '+producto.precioUnitarioSinIva+'€'}"></span>
+							</div>
+							<div th:unless="${producto.canjeable ==0}">
+								<span class="price" th:text="${'Canjeable por '+producto.puntos+' Puntos'}"></span>
+							</div>
+
+							<span class="add-to-cart"><span class="txt">Ver Producto</span>
 							</span>
+
 						</a>
-						<div th:if="${producto.descuento !=0}">
-							<span class="price" th:text="${'Descuento '+producto.descuento+'%'}"></span>
+						<div th:if="${producto.canjeable ==0}">
+							<div th:if="${producto.descuento !=0}">
+								<span class="price" th:text="${'Descuento '+producto.descuento+'%'}"></span>
+							</div>
+							<div th:unless="${producto.descuento !=0}">
+								<span class="price">Sin Descuento</span>
+							</div>
 						</div>
-						<div th:unless="${producto.descuento !=0}">
-							<span class="price">Sin Descuento</span>
+						<div th:unless="${producto.canjeable ==0}">
+							<span></span>
 						</div>
+
 					</div>
 
 				</div>

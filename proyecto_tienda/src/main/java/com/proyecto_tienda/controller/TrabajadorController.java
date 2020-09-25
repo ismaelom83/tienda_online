@@ -551,8 +551,7 @@ public class TrabajadorController {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	 System.out.println("id "+idProducto);
-	 System.out.println("puntos "+puntosCangeable);
+
 		try {
 			pService.actualizarPuntosCangeable(Long.parseLong(idProducto), Integer.parseInt(puntosCangeable));
 		} catch (NumberFormatException e) {
@@ -561,8 +560,12 @@ public class TrabajadorController {
 			e.printStackTrace();
 		}	
 		try {
-			byte cangeableONo = 1;
-			pService.actualizarCangeable(Long.parseLong(idProducto), cangeableONo);
+			byte cangeableONo1 = 1;
+			byte descuento =0;
+			int precio=0;
+			pService.actualizarCangeable(Long.parseLong(idProducto), cangeableONo1);
+			pService.actualizarDescuento(Long.parseLong(idProducto), descuento);
+			pService.actualizarPrecio(Long.parseLong(idProducto), precio);
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -570,6 +573,48 @@ public class TrabajadorController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return "redirect:/trabajadorVentas";
+		
+	}
+	
+	@PostMapping("/quitarCanjeable")
+	public String quitarCanjeable(@RequestParam(name = "idQuitar") String idQuitar,
+			@RequestParam(name = "precioNuevo") String precioNuevo,Persona persona,
+			Cliente cliente,Producto producto, HttpSession session,Model model) {
+		
+		try {
+			producto =	pService.buscarProductoId(Long.parseLong(idQuitar));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			byte cangeableONo0 = 0;
+			pService.actualizarCangeable(Long.parseLong(idQuitar), cangeableONo0);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			int puntos =0;
+			pService.actualizarPrecio(Long.parseLong(idQuitar), Integer.parseInt(precioNuevo));
+			pService.actualizarPuntosCangeable(Long.parseLong(idQuitar), puntos);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return "redirect:/trabajadorVentas";
 		
 	}

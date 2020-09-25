@@ -31,9 +31,12 @@
 					</div>
 					<br>
 					<div class="pull-right">
-						<h4>
+						<h4 th:if="${productomodel.canjeable==0}">
 							<strong th:text="${'Precio '+productomodel.precioUnitarioSinIva+'€'}"></strong><br>
 							<span th:text="${'Descuento '+productomodel.descuento+'%'}"></span>
+						</h4>
+							<h4 th:unless="${productomodel.canjeable==0}">
+							<strong th:text="${'Puntos '+productomodel.puntos}"></strong><br>
 						</h4>
 					</div>
 					<div>

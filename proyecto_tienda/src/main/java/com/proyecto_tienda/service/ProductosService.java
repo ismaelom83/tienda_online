@@ -23,6 +23,8 @@ public interface ProductosService {
     void actualizarDescuento(Long id, byte cantidad) throws Exception;
     
     void actualizarCangeable(Long id, byte cangeableONo) throws Exception;
+    
+    void actualizarPrecio(Long id, int precio) throws Exception;
      
     
 }

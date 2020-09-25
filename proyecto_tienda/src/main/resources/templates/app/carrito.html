@@ -44,7 +44,7 @@
 					<thead>
 						<tr>
 							<th>Product</th>
-							<th class="text-center">Precio Unidad</th>
+							<th class="text-center">Coste Unidad</th>
 							<th>Cantidad</th>
 							<th>Descuento Unidad</th>
 						</tr>
@@ -64,14 +64,17 @@
 									</div>
 								</div>
 							</td>
-							<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
-								</strong>
+							<td th:if="${carrito.canjeable==0}" class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
+								</strong></td>
+								<td th:unless="${carrito.canjeable==0}" class="col-md-1 text-center"><strong th:text="${carrito.puntos+' Puntos'}">
+								</strong></td>
 							<td id="cantidad1" class="text-left"><strong th:text="${carrito.cantidad}">
 
 								</strong></td>
-									<td id="cantidad1" class="text-left"><strong th:text="${carrito.descuento+'%'}">
+									<td th:if="${carrito.canjeable==0}" id="cantidad1" class="text-left"><strong th:text="${carrito.descuento+'%'}">
 
 								</strong></td>
+								<td th:unless="${carrito.canjeable==0}"><span></span></td>
 
 							<td class="col-md-1"><a th:href="@{/borrarCarrito/{id}(id=${carrito.id})}"
 									class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Eliminar

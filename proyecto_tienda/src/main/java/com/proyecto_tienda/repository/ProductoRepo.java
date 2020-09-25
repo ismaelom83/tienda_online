@@ -93,6 +93,16 @@ public class ProductoRepo{
 		txn.commit();
 		
 	}
+	
+	public void actualizarPrecio(Long id, int precio) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Producto p set p.precioUnitarioSinIva='" + precio + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
 
 
 

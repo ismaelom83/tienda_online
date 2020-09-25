@@ -61,5 +61,10 @@ public class ProductosServiceImp implements ProductosService {
 		
 	}
 
+	@Override
+	public void actualizarPrecio(Long id, int precio) throws Exception {
+		pRepo.actualizarPrecio(id, precio);
+	}
+
 
 }

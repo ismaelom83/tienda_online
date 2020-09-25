@@ -13,7 +13,10 @@ html {
   display: flex;
 }
 
-.fa-tags{
+.fa-arrow-alt-circle-up{
+	color: red;
+}
+.fa-arrow-alt-circle-down{
 	color: red;
 }
 

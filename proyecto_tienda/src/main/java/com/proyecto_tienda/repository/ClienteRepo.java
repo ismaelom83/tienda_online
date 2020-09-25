@@ -107,4 +107,14 @@ public class ClienteRepo {
 		
 	}
 	
+	public void recargarPuntos(int id, int puntos) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Cliente p set p.puntos=p.puntos + '" + puntos + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
+	
 }

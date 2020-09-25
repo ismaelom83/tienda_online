@@ -286,13 +286,13 @@ public class ClienteController {
 		} else {
 			model.addAttribute("carrito", listaCarrito);
 		}
-		
-		System.out.println("la cantidad de producto "+producto.getCantidad());
-		
+			
 		
 		if (session.getAttribute("sumaTotal")!=null) {
 			sumaTotal = (int) session.getAttribute("sumaTotal");
-			int lineaSuma = producto.getCantidad()*producto.getPrecioUnitarioSinIva();
+			int descuento = producto.getPrecioUnitarioSinIva()*producto.getDescuento()/100;
+			int descuentoFinal = producto.getPrecioUnitarioSinIva()-descuento;
+			int lineaSuma = descuentoFinal* producto.getCantidad();
 			int sumaTotalFinal = sumaTotal-lineaSuma; 
 			model.addAttribute("sumaTotal", sumaTotalFinal);
 			logger.info("Producto borrado del carrito con exito");
@@ -368,7 +368,14 @@ public class ClienteController {
 					e.printStackTrace();
 				}
 				
+				int puntos = sumaTotal/10;
 				
+				try {
+					cliService.recargarPuntos(cliente.getId(), puntos);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				session.removeAttribute("carrito");
 			} else {
