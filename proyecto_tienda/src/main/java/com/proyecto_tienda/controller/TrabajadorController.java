@@ -472,7 +472,6 @@ public class TrabajadorController {
     		@RequestParam("precioUnitarioSinIva") String precioUnitarioSinIva,
     		@RequestParam("stock") String stock,
     		@RequestParam("id") String id,
-    		@RequestParam("descuento") String descuento,
     		Model model) throws IOException{
 	 
 	 Producto prod = pService.buscarProductoId(Long.parseLong(id));
@@ -480,7 +479,6 @@ public class TrabajadorController {
 	 prod.setDescripcion(descripcion);
 	 prod.setPrecioUnitarioSinIva(Integer.parseInt(precioUnitarioSinIva));
 	 prod.setStock(Integer.parseInt(stock));
-	 prod.setDescuento(Byte.parseByte(descuento));
 	 System.out.println("el stock nuevo " +prod.getStock());
 	 if (!file.isEmpty()) {
 		 String folder= "./src/main/resources/static/img/";
