@@ -491,7 +491,7 @@ public class ClienteController {
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionTotal", "devolucionTotal",
-					"http://b8rg15mwxwynuk9q.chr7pe7iynqr.eu-west-1.rds.amazonaws.com/ControllerDevolverTotal?id=" + id + "", 0, 0);
+					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverTotal?id=" + id + "", 0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
 		return "redirect:/clientes";
@@ -507,7 +507,7 @@ public class ClienteController {
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial",
 					"devolucionParcial",
-					"http://b8rg15mwxwynuk9q.chr7pe7iynqr.eu-west-1.rds.amazonaws.com/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
+					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
 					0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
