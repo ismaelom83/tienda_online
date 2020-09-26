@@ -33,11 +33,11 @@ public class Producto implements Serializable {
 	private int cantidad;
 
 	@NotEmpty(message = "No puede estar vacio")
-	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
+//	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
 	private String categoria;
 
 	@NotEmpty(message = "No puede estar vacio")
-	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
+//	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
 	private String descripcion;
 
 	private byte descuento;
@@ -49,7 +49,7 @@ public class Producto implements Serializable {
 	private String rutaImagen;
 
 	@NotNull(message = "No puede ser nulo")
-	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
+//	@Size(min = 2, max = 20, message = "Numero de caracteres invalido")
 	private int stock;
 
 	//bi-directional many-to-one association to DetallePedido
