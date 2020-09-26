@@ -76,7 +76,7 @@ public class FacturaWriter {
 
 		} catch (Exception e) {
 
-			log.error(String.format("Error al generar la facuta del pedido %d", cp.getId()));
+			log.error(String.format("Errors al generar la facuta del pedido %d", cp.getId()));
 
 			e.printStackTrace();
 

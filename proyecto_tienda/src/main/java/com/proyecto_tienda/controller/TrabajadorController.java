@@ -307,13 +307,16 @@ public class TrabajadorController {
 	}
 	
 	@GetMapping("/generarFactura/{id}")
-	public String generarFactura(@PathVariable int id,HttpSession session, HttpServletResponse response) {
-
+	public void generarFactura(@PathVariable int id,HttpSession session, HttpServletResponse response,Persona persona) throws IOException {
+	
 		if (session.getAttribute("nombre") != null) {
 			DetallePedido dp = cabeService.buscarIdDetalle(id);		
 			CabeceraPedido cp = cabeService.buscarIdDetalleCabecera(dp.getCabeceraPedido().getId());
+			
+			persona = (Persona) session.getAttribute("nombre");
+			
 
-//			if (cp != null && cp.getCliente().getId() == (int) session.getAttribute("nombre")) {
+			if (cp != null) {
 				File bill = new FacturaWriter().escribirFactura(cp);
 				response.setHeader("Content-Disposition", String.format("attachment;filename=\"%s\"", bill.getName()));
 				try {
@@ -323,24 +326,22 @@ public class TrabajadorController {
 					out.flush();
 					is.close();
 					out.close();
-
-				} catch (Exception e) {
-
+				
+				} catch (IllegalStateException e) {	
 					logger.error(String.format("No se pudo generar la factura del pedido con id %d", id));
 					e.printStackTrace();
-
 				}
 
 				logger.info(String.format("Se descargo la factura del pedido con id %d", id));
 
 				bill.delete();
-
-//			}
-
-		}
-
-		return "redirect:/trabajadorCompras";
 		
+
+			}
+			
+			logger.info(String.format("No Se descargo la factura del pedido con id %d", id));
+		}
+//		return "redirect:/trabajadorCompras";	
 	}
 
 	@GetMapping("/detallePedidoBD/{id}")
