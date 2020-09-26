@@ -83,13 +83,27 @@
 					</tbody>
 					<tr>
 						<td></td>
-						<td>
-							<h3>Total</h3>
+						<td th:if="${sumaTotal !=0}">
+							<h3>Total Euros</h3>
 						</td>
-						<td class="text-right">
+						<td class="text-right" th:if="${sumaTotal !=0}">
 							<h3>
 								<div th:if="${sumaTotal !=null}">
 									<strong th:text="${sumaTotal +'€'}">
+									</strong>
+								</div>
+
+							</h3>
+						</td>
+						
+							<td></td>
+						<td th:if="${sumaTotalPuntos!=0}">
+							<h3>Total Puntos</h3>
+						</td>
+						<td class="text-right" th:if="${sumaTotalPuntos!=0}">
+							<h3>
+								<div th:if="${sumaTotalPuntos !=null}">
+									<strong th:text="${sumaTotalPuntos +'P'}">
 									</strong>
 								</div>
 

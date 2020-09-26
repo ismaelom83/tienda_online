@@ -202,6 +202,7 @@ public class ClienteController {
 			HttpSession session, Producto producto) {
 
 		int sumaTotal = 0;
+		int sumaTotalPuntos =0;
 		try {
 			producto = pService.buscarProductoId(id);
 		} catch (IOException e) {
@@ -235,10 +236,14 @@ public class ClienteController {
 		int	descuento = pro.getPrecioUnitarioSinIva()*pro.getDescuento()/100;
 		int precioFinal = pro.getPrecioUnitarioSinIva()-descuento;
 			sumaTotal += precioFinal * pro.getCantidad();
+		sumaTotalPuntos +=	pro.getPuntos() * pro.getCantidad();
 		}
 		session.setAttribute("sumaTotal", sumaTotal);
 		sumaTotal = (int) session.getAttribute("sumaTotal");
 		model.addAttribute("sumaTotal", sumaTotal);
+		session.setAttribute("sumaTotalPuntos", sumaTotalPuntos);
+		sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
+		model.addAttribute("sumaTotalPuntos", sumaTotalPuntos);
 		model.addAttribute("carrito", listaCarrito);
 		cantidad=null;
 		return "redirect:/carrito";
@@ -257,7 +262,11 @@ public class ClienteController {
 			 sumaTotal =(int) session.getAttribute("sumaTotal");	
 				model.addAttribute("sumaTotal", sumaTotal);
 		}
-
+		int sumaTotalPuntos =0;
+		if (session.getAttribute("sumaTotalPuntos")!=null) {
+			 sumaTotalPuntos =(int) session.getAttribute("sumaTotalPuntos");	
+				model.addAttribute("sumaTotalPuntos", sumaTotalPuntos);
+		}
 		
 		
 		return "app/carrito";
@@ -268,6 +277,7 @@ public class ClienteController {
 	public String borrarCarrito(@PathVariable Long id, Producto producto, HttpSession session, Model model) {
 
 		int sumaTotal = 0;
+		int sumaTotalPuntos = 0;
 		ArrayList<Producto> listaCarrito = null;
 		listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
 		for (Producto producto2 : listaCarrito) {
@@ -295,6 +305,9 @@ public class ClienteController {
 			int lineaSuma = descuentoFinal* producto.getCantidad();
 			int sumaTotalFinal = sumaTotal-lineaSuma; 
 			model.addAttribute("sumaTotal", sumaTotalFinal);
+			sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
+			int sumaTotalFinalPuntos = sumaTotalPuntos-producto.getPuntos()*producto.getCantidad();
+			model.addAttribute("sumaTotalPuntos", sumaTotalFinalPuntos);
 			logger.info("Producto borrado del carrito con exito");
 		}
 
@@ -308,6 +321,8 @@ public class ClienteController {
 			Cliente cliente) {
 		int cantidadComprar = 0;
 		int stockProducto = 0;
+		int puntosCliente = 0;
+		int puntosProducto = 0;
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
 		@SuppressWarnings("unchecked")
@@ -315,16 +330,19 @@ public class ClienteController {
 		for (Producto producto2 : listaCarrito) {
 			cantidadComprar = producto2.getCantidad();
 			stockProducto = producto2.getStock();
+			puntosProducto = producto2.getPuntos();
 		}
 		try {
 			cliente = cliService.buscarClienteId(persona.getId());
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+		puntosCliente = cliente.getPuntos();
 		int sumaTotal = (int) session.getAttribute("sumaTotal");
+		int sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
 		double saldoCliente = cliente.getSaldo();
 		if (!listaCarrito.isEmpty()) {
-			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0) {
+			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0 && puntosCliente - sumaTotalPuntos > 0 ) {
 				for (Producto producto : listaCarrito) {
 					try {
 
@@ -338,9 +356,11 @@ public class ClienteController {
 				model.addAttribute("listaCarrito", listaCarrito);
 				int sumaTotal2 = (int) session.getAttribute("sumaTotal");
 				model.addAttribute("sumaTotal", sumaTotal2);
+				int sumaTotalPuntos2 = (int) session.getAttribute("sumaTotalPuntos");
+				model.addAttribute("sumaTotalPuntos", sumaTotalPuntos2);
 				persona = (Persona) session.getAttribute("nombre");
 				try {
-					caSer.insertCabeceraPedido(persona.getId(), sumaTotal);
+					caSer.insertCabeceraPedido(persona.getId(), sumaTotal,sumaTotalPuntos);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					logger.warn("pedido no realizado");
@@ -357,7 +377,7 @@ public class ClienteController {
 						int descuento = producto.getPrecioUnitarioSinIva()*producto.getDescuento()/100;
 						int descuentoFinal = producto.getPrecioUnitarioSinIva()-descuento;
 						deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
-								descuentoFinal * producto.getCantidad());
+								descuentoFinal * producto.getCantidad(),producto.getPuntos()*producto.getCantidad());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -377,9 +397,16 @@ public class ClienteController {
 					e.printStackTrace();
 				}
 				
+				try {
+					cliService.actualizarPuntosCliente(cliente.getId(), sumaTotalPuntos);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				session.removeAttribute("carrito");
 			} else {
-				if (stockProducto - cantidadComprar < 0) {
+				if (stockProducto - cantidadComprar <= 0) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
 					model.addAttribute("carrito", listaCarrito2);
@@ -393,6 +420,13 @@ public class ClienteController {
 					model.addAttribute("sumaTotal", sumaTotal2);
 					model.addAttribute("saldoCuenta", saldoCliente);
 					return "app/alertSaldo";
+				}
+				if (puntosCliente - sumaTotalPuntos < 0) {
+					@SuppressWarnings("unchecked")
+					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+					model.addAttribute("carrito", listaCarrito2);
+					model.addAttribute("puntosCliente", cliente.getPuntos());
+					return "app/alertPuntos";
 				}
 
 			}
@@ -435,13 +469,16 @@ public class ClienteController {
 		model.addAttribute("nombre", persona);
 		try {
 			int total = 0;
+			int totalPuntos = 0;
 			ArrayList<DetallePedido> detallePedido = deSer.mostrarLineasPedido(id);
 			for (DetallePedido detallePedido2 : detallePedido) {
 				total += detallePedido2.getTotalLinea();
+				totalPuntos+=detallePedido2.getTotalLineaPuntos();
 			}
 	
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
+			model.addAttribute("totalPuntos", totalPuntos);
 		} catch (Exception e) {
 		}
 		return "app/detallePedido";

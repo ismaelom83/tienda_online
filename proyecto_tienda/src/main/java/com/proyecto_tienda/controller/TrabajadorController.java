@@ -133,6 +133,17 @@ public class TrabajadorController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		int puntosAcumulados = cabecera.getImporteTotal()/10;
+		System.out.println();
+		
+		try {
+			cliService.recargarPuntos(cabecera.getCliente().getId(), cabecera.getImporteTotalPuntos()-puntosAcumulados);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		menService.borrarMensajeDevolucion(Integer.parseInt(id));
 		return "redirect:/devolverPedido";
 
@@ -171,6 +182,7 @@ public class TrabajadorController {
 		}
 		
 		int total = 0;
+		int totalPuntos = 0;
 		ArrayList<DetallePedido> detallePedido = null;
 		try {
 			detallePedido = deService.mostrarLineasPedido(Integer.parseInt(id2));
@@ -183,10 +195,12 @@ public class TrabajadorController {
 		}
 		for (DetallePedido detallePedido2 : detallePedido) {
 			total += detallePedido2.getTotalLinea();
+			totalPuntos += detallePedido2.getTotalLineaPuntos();
 		}
 		
 		try {
 			cabeService.actualizarTotalFactura(Integer.parseInt(id2), total);
+			cabeService.actualizarTotalPuntosFactura(Integer.parseInt(id2), totalPuntos);
 		} catch (NumberFormatException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -195,8 +209,19 @@ public class TrabajadorController {
 			e1.printStackTrace();
 		}
 		
+		
+		
 		try {
 			cliService.recargarSaldoCliente(cabecera.getCliente().getId(), detalle2.getTotalLinea());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int puntosAcumulados = (int) (detalle2.getTotalLinea()/10);
+		
+		try {
+			cliService.recargarPuntos(cabecera.getCliente().getId(), detalle2.getTotalLineaPuntos()-puntosAcumulados);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -322,9 +347,11 @@ public class TrabajadorController {
 	public String detallePedidoBD(@PathVariable int id, Model model) throws Exception {
 
 		int lProductos = 0;
+		int totalPuntos = 0;
 		ArrayList<DetallePedido> detalle2 = deService.mostrarLineasPedido(id);
 		for (DetallePedido detallePedido : detalle2) {
 			lProductos += detallePedido.getTotalLinea();
+			totalPuntos += detallePedido.getTotalLineaPuntos();
 		}
 		for (DetallePedido detallePedido : detalle2) {
 		int detalle =	detallePedido.getId();
@@ -332,6 +359,7 @@ public class TrabajadorController {
 		}
 		model.addAttribute("totalLinea2", lProductos);
 		model.addAttribute("lineaDetalle", detalle2);
+		model.addAttribute("totalPuntos", totalPuntos);
 
 		return "app/detallePedidoBaseDatos";
 

@@ -25,12 +25,13 @@ public class CabeceraPedidoRepo {
 	@Autowired
 	private EntityManager entityManager;
 	
-	public  void insertCabeceraPedido(int id, int importe_total) throws Exception {
+	public  void insertCabeceraPedido(int id, int importe_total, int importeTotalPuntos) throws Exception {
 		Session session = entityManager.unwrap(Session.class);
-		Query query = session.createNativeQuery("INSERT INTO cabecera_pedido  (id_cliente,importe_total) VALUES(?,?)");
+		Query query = session.createNativeQuery("INSERT INTO cabecera_pedido  (id_cliente,importe_total,importe_total_puntos) VALUES(?,?,?)");
 		Transaction txn = session.beginTransaction();
 		query.setParameter(1, id);
 		query.setParameter(2, importe_total);
+		query.setParameter(3, importeTotalPuntos);
 		query.executeUpdate();
 		txn.commit();
 	}
@@ -82,6 +83,16 @@ public class CabeceraPedidoRepo {
 		Transaction txn = session.beginTransaction();
 		Query updateQuery = session
 				.createQuery("UPDATE CabeceraPedido cp set cp.importeTotal='" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
+	
+	public void actualizarTotalPuntosFactura(int id, int cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE CabeceraPedido cp set cp.importeTotalPuntos='" + cantidad + "' where id='" + id + "'");
 		updateQuery.executeUpdate();
 		txn.commit();
 		

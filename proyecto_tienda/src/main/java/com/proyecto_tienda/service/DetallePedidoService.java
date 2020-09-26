@@ -7,7 +7,7 @@ import com.proyecto_tienda.model.Mensajeria;
 
 public interface DetallePedidoService {
 	ArrayList<DetallePedido> mostrarLineasPedido(int id) throws Exception;
-	void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total) throws Exception;
+	void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total,int totalPuntos) throws Exception;
 	void actualizarStock(Long id, int cantidad) throws Exception;
 	ArrayList<Mensajeria> buscarDevoluconPedidos(int id) throws Exception;
 	void borrarPedido(int id) throws Exception;

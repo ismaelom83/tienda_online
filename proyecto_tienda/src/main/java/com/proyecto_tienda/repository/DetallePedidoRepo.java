@@ -32,15 +32,16 @@ public class DetallePedidoRepo {
 		
 	}
 	
-	public void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total) throws Exception {
+	public void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total,int totalPuntos) throws Exception {
 		Session session = entityManager.unwrap(Session.class);
 		Transaction txn = session.beginTransaction();
 		Query query = session.createNativeQuery(
-				"INSERT INTO detalle_pedido  (id_pedido, id_producto,cantidad,total_linea) VALUES(?,?,?,?)");
+				"INSERT INTO detalle_pedido  (id_pedido, id_producto,cantidad,total_linea,total_linea_puntos) VALUES(?,?,?,?,?)");
 		query.setParameter(1, idCabezera);
 		query.setParameter(2, cabezera);
 		query.setParameter(3, cantidad);
 		query.setParameter(4, total);
+		query.setParameter(5, totalPuntos);
 		query.executeUpdate();
 		txn.commit();
 	}

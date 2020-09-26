@@ -100,4 +100,9 @@ public class ClienteServiceImp implements ClienteService {
 		cliRepo.recargarPuntos(id, puntos);
 	}
 
+	@Override
+	public void actualizarPuntosCliente(int id, double cantidad) throws Exception {
+		cliRepo.actualizarPuntosCliente(id, cantidad);
+	}
+
 }

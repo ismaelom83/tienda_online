@@ -117,4 +117,14 @@ public class ClienteRepo {
 		
 	}
 	
+	public void actualizarPuntosCliente(int id, double cantidad) throws Exception {
+		Session session = entityManager.unwrap(Session.class);
+		Transaction txn = session.beginTransaction();
+		Query updateQuery = session
+				.createQuery("UPDATE Cliente p set p.puntos=p.puntos - '" + cantidad + "' where id='" + id + "'");
+		updateQuery.executeUpdate();
+		txn.commit();
+		
+	}
+	
 }

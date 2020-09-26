@@ -43,25 +43,45 @@
 								</div>
 							</div>
 						</td>
-						<td class="col-md-1 text-center"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
+						<td class="col-md-1 text-center" th:if="${carrito.canjeable==0}"><strong th:text="${carrito.precioUnitarioSinIva+'€'}">
 							</strong>
+								<td th:unless="${carrito.canjeable==0}" class="col-md-1 text-center"><strong th:text="${carrito.puntos+' Puntos'}">
+								</strong></td>
 						<td class="text-left"><strong th:text="${carrito.cantidad}">
 							</strong></td>
-								<td class="text-left"><strong th:text="${carrito.descuento+'%'}">
+								<td class="text-left" th:if="${carrito.canjeable==0}"><strong th:text="${carrito.descuento+'%'}">
 							</strong></td>
+							<td th:unless="${carrito.canjeable==0}"><span></span></td>
 					</tr>
 				</tbody>
 				<tr>
-					<td></td>
-					<td>
-						<h3>Total</h3>
-					</td>
-					<td class="text-right">
-						<h3>
-							<strong th:text="${sumaTotal}">
-							</strong>
-						</h3>
-					</td>
+						<td></td>
+						<td th:if="${sumaTotal !=0}">
+							<h3>Total Euros</h3>
+						</td>
+						<td class="text-right" th:if="${sumaTotal !=0}">
+							<h3>
+								<div th:if="${sumaTotal !=null}">
+									<strong th:text="${sumaTotal +'€'}">
+									</strong>
+								</div>
+
+							</h3>
+						</td>
+						
+							<td></td>
+						<td th:if="${sumaTotalPuntos!=0}">
+							<h3>Total Puntos</h3>
+						</td>
+						<td class="text-right" th:if="${sumaTotalPuntos!=0}">
+							<h3>
+								<div th:if="${sumaTotalPuntos !=null}">
+									<strong th:text="${sumaTotalPuntos +'P'}">
+									</strong>
+								</div>
+
+							</h3>
+						</td>
 				</tr>
 
 				<tr>

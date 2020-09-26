@@ -31,6 +31,9 @@ public class CabeceraPedido implements Serializable {
 	@OneToMany(mappedBy="cabeceraPedido")
 	private List<DetallePedido> detallePedidos;
 
+	@Column(name="importe_total_puntos")
+	private int importeTotalPuntos;
+	
 	public CabeceraPedido() {
 	}
 
@@ -46,6 +49,7 @@ public class CabeceraPedido implements Serializable {
 		return this.importeTotal;
 	}
 
+	
 	public void setImporteTotal(int importeTotal) {
 		this.importeTotal = importeTotal;
 	}
@@ -79,5 +83,15 @@ public class CabeceraPedido implements Serializable {
 
 		return detallePedido;
 	}
+
+	public int getImporteTotalPuntos() {
+		return importeTotalPuntos;
+	}
+
+	public void setImporteTotalPuntos(int importeTotalPuntos) {
+		this.importeTotalPuntos = importeTotalPuntos;
+	}
+	
+	
 
 }

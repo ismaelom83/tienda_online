@@ -31,6 +31,8 @@ public class DetallePedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_producto")
 	private Producto producto;
+	@Column(name = "total_linea_puntos")
+	private int totalLineaPuntos;
 
 	public DetallePedido() {
 	}
@@ -74,5 +76,15 @@ public class DetallePedido implements Serializable {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+
+	public int getTotalLineaPuntos() {
+		return totalLineaPuntos;
+	}
+
+	public void setTotalLineaPuntos(int totalLineaPuntos) {
+		this.totalLineaPuntos = totalLineaPuntos;
+	}
+	
+	
 
 }

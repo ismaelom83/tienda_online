@@ -21,8 +21,8 @@ public class DetallePedidoServiceImp implements DetallePedidoService {
 	}
 
 	@Override
-	public void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total) throws Exception {
-		deRepo.insertDetallePedido(idCabezera, cabezera, cantidad, total);
+	public void insertDetallePedido(int idCabezera, Long cabezera, int cantidad, int total,int totalPuntos) throws Exception {
+		deRepo.insertDetallePedido(idCabezera, cabezera, cantidad, total,totalPuntos);
 	}
 
 	@Override

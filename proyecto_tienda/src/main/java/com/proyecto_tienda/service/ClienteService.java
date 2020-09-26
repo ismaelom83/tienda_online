@@ -26,4 +26,6 @@ public interface ClienteService {
 	void recargarSaldoCliente(int id, double cantidad) throws Exception;
 	
 	void recargarPuntos(int id, int puntos) throws Exception;
+	
+	void actualizarPuntosCliente(int id, double cantidad) throws Exception;
 }

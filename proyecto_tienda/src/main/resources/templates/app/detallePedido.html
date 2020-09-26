@@ -21,8 +21,8 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>Product</th>
-							<th class="text-center">Precio Unidad</th>
+							<th>Producto</th>
+							<th class="text-center">Coste Unidad</th>
 							<th>Cantidad</th>
 							<th>Descuento Unidad</th>
 							
@@ -43,14 +43,16 @@
 									</div>
 								</div>
 							</td>
-							<td class="col-md-1 text-center"><strong th:text="${carrito.producto.precioUnitarioSinIva+'€'}">
-								</strong>
+							<td class="col-md-1 text-center" th:if="${carrito.producto.canjeable==0}"><strong th:text="${carrito.producto.precioUnitarioSinIva+'€'}">
+								</strong></td>
+								<td class="col-md-1 text-center" th:unless="${carrito.producto.canjeable==0}"><strong th:text="${carrito.producto.puntos+'P'}">
+								</strong></td>
 							<td class="text-left"><strong th:text="${carrito.getCantidad()}">
 
 								</strong></td>
-								<td class="text-left"><strong th:text="${carrito.producto.descuento+'%'}">
-
+								<td class="text-left" th:if="${carrito.producto.canjeable==0}"><strong th:text="${carrito.producto.descuento+'%'}">
 								</strong></td>
+								<td th:unless="${carrito.producto.canjeable==0}"><span></span></td>
 
 							<td class="col-md-1"><a th:href="@{/valorarProducto/{id}(id=${carrito.producto.id})}"
 									class="btn btn-success"><span></span>Valorar Articulo
@@ -67,11 +69,21 @@
 					<tr>
 						<td></td>
 						<td>
-							<h3>Total</h3>
+							<h3 th:if="${total!=0}">Total Euros</h3>
 						</td>
 						<td class="text-right">
-							<h3>
+							<h3 th:if="${total!=0}">
 								<strong th:text="${total}">
+								</strong>
+							</h3>
+						</td>
+								<td></td>
+						<td>
+							<h3 th:if="${totalPuntos!=0}">Total Puntos</h3>
+						</td>
+						<td class="text-right">
+							<h3 th:if="${totalPuntos!=0}">
+								<strong th:text="${totalPuntos}">
 								</strong>
 							</h3>
 						</td>

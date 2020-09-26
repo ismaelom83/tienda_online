@@ -18,8 +18,8 @@ public class CabeceraPedidoServiceImp implements CabeceraPedidoService {
 	CabeceraPedidoRepo caRepo;
 
 	@Override
-	public void insertCabeceraPedido(int id, int importe_total) throws Exception {
-		caRepo.insertCabeceraPedido(id, importe_total);	
+	public void insertCabeceraPedido(int id, int importe_total,int importeTotalPuntos) throws Exception {
+		caRepo.insertCabeceraPedido(id, importe_total, importeTotalPuntos);	
 	}
 
 	@Override
@@ -46,6 +46,12 @@ public class CabeceraPedidoServiceImp implements CabeceraPedidoService {
 	@Override
 	public void actualizarTotalFactura(int id, int cantidad) throws Exception {
 		caRepo.actualizarTotalFactura(id, cantidad);
+		
+	}
+
+	@Override
+	public void actualizarTotalPuntosFactura(int id, int cantidad) throws Exception {
+		caRepo.actualizarTotalPuntosFactura(id, cantidad);
 		
 	}
 
