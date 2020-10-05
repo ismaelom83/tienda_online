@@ -779,5 +779,6 @@ public class TrabajadorController {
 		return "app/verPromocionesClienteUrl";
 		
 	}
+
 	
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>Tienda Online</title>
+</head>
+<body>
+<div class="container flex-grow-1" style="margin: 10vh auto;">
+		<div th:if="${backups != null}">
+			<table class="table mb-3">
+				<tr>
+					<th>Fecha (dd_MM_yyyy_HH_mm_ss)</th>
+					<th>Acciones</th>
+				</tr>
+				<tr th:each="backup : ${backups}">
+					<td th:text="${backup.getName()}"></td>
+					<td><a
+						class="btn btn-outline-danger" 
+						th:href="@{/backup/remove/{index}(index=${backups.indexOf(backup)})}">Eliminar
+							copia de seguridad</a></td>
+				</tr>
+			</table>
+		</div>
+		<div th:unless="${backups != null}">
+			<div class="row justify-content-center">
+				<div class="col-7">
+					<h3>Todavía no hay ninguna copia de seguridad creada</h3>
+				</div>
+			</div>
+		</div>
+
+		<a class="btn btn-outline-success mt-5 float-right"
+			th:href="@{/create}">Hacer copia de seguridad ahora</a>
+			<a class="btn btn-outline-secondary mt-5 float-left"
+			th:href="@{/administrador}">Volver al administrador</a>
+
+	</div>
+</body>
+</html>
