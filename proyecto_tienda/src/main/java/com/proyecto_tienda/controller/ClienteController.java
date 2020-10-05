@@ -407,14 +407,8 @@ public class ClienteController {
 				
 				session.removeAttribute("carrito");
 			} else {
-				if (cliente.getPersona().getTipoPersona()!="CN" || cliente.getPersona().getTipoPersona()!="CP") {
-				System.out.println("estoy en el if de tipo persona");
-				@SuppressWarnings("unchecked")
-				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
-				model.addAttribute("carrito", listaCarrito2);
-				model.addAttribute("puntosCliente", cliente.getPuntos());
-				return "app/alertClientes";
-			}
+				
+//		ºº 
 				if (stockProducto - cantidadComprar <= 0) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");

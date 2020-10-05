@@ -731,7 +731,7 @@ public class TrabajadorController {
 
 		for (Persona persona2 : listaClientes) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "promocion", "promocion",
-					"http://localhost:8080/verPromocionesClienteUrl?precio=" + precioPromocion + "&fecha=" + fecha + "&id=" + Long.parseLong(id) + "",
+					"https://ismael-tienda-online.herokuapp.com/verPromocionesClienteUrl?precio=" + precioPromocion + "&fecha=" + fecha + "&id=" + Long.parseLong(id) + "",
 					0, 0);
 		}
 
