@@ -408,7 +408,13 @@ public class ClienteController {
 				session.removeAttribute("carrito");
 			} else {
 				
-//		ºº 
+//				if (cliente.getPersona().getTipoPersona()!="CN") {
+//				@SuppressWarnings("unchecked")
+//				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+//				model.addAttribute("carrito", listaCarrito2);
+//				model.addAttribute("puntosCliente", cliente.getPuntos());
+//				return "app/alertClientes";
+//			}
 				if (stockProducto - cantidadComprar <= 0) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
@@ -494,7 +500,7 @@ public class ClienteController {
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionTotal", "devolucionTotal",
-					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverTotal?id=" + id + "", 0, 0);
+					"http://localhost:8080/ControllerDevolverTotal?id=" + id + "", 0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
 		return "redirect:/clientes";
@@ -510,7 +516,7 @@ public class ClienteController {
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial",
 					"devolucionParcial",
-					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
+					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
 					0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
