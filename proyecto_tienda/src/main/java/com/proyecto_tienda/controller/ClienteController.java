@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -406,6 +407,14 @@ public class ClienteController {
 				
 				session.removeAttribute("carrito");
 			} else {
+				if (cliente.getPersona().getTipoPersona()!="CN" || cliente.getPersona().getTipoPersona()!="CP") {
+				System.out.println("estoy en el if de tipo persona");
+				@SuppressWarnings("unchecked")
+				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
+				model.addAttribute("carrito", listaCarrito2);
+				model.addAttribute("puntosCliente", cliente.getPuntos());
+				return "app/alertClientes";
+			}
 				if (stockProducto - cantidadComprar <= 0) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
@@ -515,6 +524,15 @@ public class ClienteController {
 		return "redirect:/clientes";
 
 	}
+	
+	@SuppressWarnings("unused")
+	private boolean comprobarExisteNombreUsuario(Persona persona) throws Exception {
+		Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
+		if (personaNueva.isPresent()) {
+			throw new Exception("Este nombre de usuario ya existe");
+		}
+		return true;
+	}
 
 	@PostMapping("/registro")
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
@@ -580,11 +598,15 @@ public class ClienteController {
 		session.setAttribute("producto", producto);
 		producto = (Producto) session.getAttribute("producto");
 		model.addAttribute("productomodel", producto);
-		ArrayList<ValoracionesProducto> listaProducto = valoService.valorarProducto(id);
+		ArrayList<ValoracionesProducto> listaProducto = null;
+		try {
+			listaProducto = valoService.valorarProducto(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaValoraciones", listaProducto);
 
-		for (ValoracionesProducto valoracionesProducto : listaProducto) {
-		}
 
 		return "app/productos";
 
@@ -606,7 +628,7 @@ public class ClienteController {
 	@PostMapping("/valorarProducto/{id}")
 	public String valorarProductoPost(@PathVariable Long id, Model model, HttpSession session, Producto producto,
 			Persona persona, @RequestParam("valorarDescripcion") String valorarDescripcion,
-			@RequestParam("puntuacion") String puntuacion) {
+			@RequestParam("puntuacion") int puntuacion) {
 		persona = (Persona) session.getAttribute("nombre");
 		model.addAttribute("nombre", persona);
 		ValoracionesProducto valoraciones = new ValoracionesProducto();

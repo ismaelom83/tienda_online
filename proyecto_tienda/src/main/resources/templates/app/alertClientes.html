@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles2.css}">
+	<title>Document</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="jumbotron">
+					<div class="container">
+						<h2 class="text-center">Cliente no valido</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+					<div class="row">
+			<div class="col-sm-12 col-md-10 col-md-offset-1">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Saldo de la cuenta</th>
+							<th class="text-center">Importe Total del carrito</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="col-md-10">
+								<div class="media">
+									<div class="media-body">
+										<h4 class="media-heading">
+											&nbsp; <span th:text="${saldoCuenta}">
+											</span>
+										</h4>
+									</div>
+								</div>
+							</td>
+							<td class="col-md-1 text-center"><strong th:text="${sumaTotal}">
+								</strong>
+						</tr>
+					</tbody>
+					<tr>
+						<td></td>
+						<td><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-default"> <span
+									class="glyphicon glyphicon-shopping-cart"></span>
+								Volver a login
+							</a></td>
+						<td><a sec:authorize="!isAuthenticated()" th:href="@{/logout}" class="btn btn-default"> <span
+									class="glyphicon glyphicon-shopping-cart"></span>
+							Volver a login
+							</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

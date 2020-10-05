@@ -21,7 +21,7 @@ public class ValoracionesProducto implements Serializable {
 
 	private String comentarios;
 
-	private String valoracion;
+	private int valoracion;
 
 	// bi-directional one-to-one association to Producto
 	@OneToOne
@@ -67,11 +67,11 @@ public class ValoracionesProducto implements Serializable {
 		this.comentarios = comentarios;
 	}
 
-	public String getValoracion() {
+	public int getValoracion() {
 		return this.valoracion;
 	}
 
-	public void setValoracion(String valoración) {
+	public void setValoracion(int valoración) {
 		this.valoracion = valoración;
 	}
 

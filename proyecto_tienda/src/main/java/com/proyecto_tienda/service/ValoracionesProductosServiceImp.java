@@ -15,7 +15,7 @@ public class ValoracionesProductosServiceImp implements ValoracionesProductosSer
 	ValoracionesProductosRepo valoRepo;
 	
 	@Override
-	public ArrayList<ValoracionesProducto> valorarProducto(Long idProducto) {
+	public ArrayList<ValoracionesProducto> valorarProducto(Long idProducto) throws Exception {
 		return valoRepo.valorarProducto(idProducto);
 	}
 

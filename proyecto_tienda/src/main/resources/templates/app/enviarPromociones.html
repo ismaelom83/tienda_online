@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles2.css}">
+	<title>Document</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-10 col-md-offset-1">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Precio inicial</th>
+							<th>Precio para promocion</th>
+							<th>Fecha para la promocion</th>
+							<th>Enviar promocion</th>
+						</tr>
+					</thead>
+					<tbody th:each="producto: ${producto}">
+						<form th:action="@{/enviarPromocion}" method="POST">
+							<tr>
+								<td class="col-md-10">
+									<div class="media">
+										<img class="thumbnail pull-left media-object"
+											th:src="@{/img/}+${producto.rutaImagen}" style="width: 150px;">
+										<div class="media-body">
+											<h4 class="media-heading">
+												&nbsp; <span th:text="${producto.descripcion}">
+												</span>
+											</h4>
+										</div>
+									</div>
+								</td>
+								<td class="text-left"><strong th:text="${producto.precioUnitarioSinIva}">
+									</strong></td>
+								<td class="text-left"><input type="number" name="precioPromocion" id="precioPromocion">
+								<input type="hidden" name="id" id="id" th:value="${producto.id}">
+								</td>
+								<td><input type="date" name="fecha" id="fecha"></td>
+									<td><button id="btn-signup" type="submit" class="btn btn-info">
+										EnviarPromocion</button></td> 
+
+							</tr>
+						</form>
+					</tbody>
+					<tr>
+						<td></td>
+						<td><a sec:authorize="isAuthenticated()" th:href="@{/administrador}" class="btn btn-default">
+								<span class="glyphicon glyphicon-shopping-cart"></span>
+								Volver a administrador
+							</a></td>
+						<td><a sec:authorize="!isAuthenticated()" th:href="@{/administrador}" class="btn btn-default">
+								<span class="glyphicon glyphicon-shopping-cart"></span>
+								Volver a administrador
+							</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

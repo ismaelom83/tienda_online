@@ -6,6 +6,6 @@ import com.proyecto_tienda.model.ValoracionesProducto;
 
 public interface ValoracionesProductosService {
 	
-	ArrayList<ValoracionesProducto> valorarProducto(Long idProducto);
+	ArrayList<ValoracionesProducto> valorarProducto(Long idProducto) throws Exception;
 
 }

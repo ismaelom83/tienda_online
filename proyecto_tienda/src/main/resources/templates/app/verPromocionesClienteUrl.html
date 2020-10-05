@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles2.css}">
+	<title>Document</title>
+</head>
+
+<body>
+
+	<div class="container" style="margin-top: 150px">
+		<div class="row">
+			<div class="col-sm-12 col-md-10 col-md-offset-1">
+					<h1>PROMOCIONES DE PRODUCTOS</h1>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Precio original</th>
+							<th>Precio para promocion</th>
+							<th>Fecha para la promocion</th>
+						</tr>
+					</thead>
+					<tbody th:each="producto: ${producto}">
+							<tr>
+								<td class="col-md-10">
+									<div class="media">
+										<img class="thumbnail pull-left media-object"
+											th:src="@{/img/}+${producto.rutaImagen}" style="width: 150px;">
+										<div class="media-body">
+											<h4 class="media-heading">
+												&nbsp; <span th:text="${producto.descripcion}">
+												</span>
+											</h4>
+										</div>
+									</div>
+								</td>
+								<td class="text-left"><strong th:text="${producto.precioUnitarioSinIva}">
+									</strong></td>
+								<td class="text-left"><span th:text="${precio}"></span></td>
+								<td><span th:text="${fecha}"></span></td>
+							</tr>
+					</tbody>
+					<tr>
+						<td></td>
+						<td><a sec:authorize="isAuthenticated()" th:href="@{/clientes}" class="btn btn-default">
+								<span class="glyphicon glyphicon-shopping-cart"></span>
+								Volver a cliente
+							</a></td>
+						<td><a sec:authorize="!isAuthenticated()" th:href="@{/clientes}" class="btn btn-default">
+								<span class="glyphicon glyphicon-shopping-cart"></span>
+								Volver a cliente
+							</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
