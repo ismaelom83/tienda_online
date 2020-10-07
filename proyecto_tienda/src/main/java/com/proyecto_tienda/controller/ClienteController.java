@@ -542,30 +542,9 @@ public class ClienteController {
 			return "app/registro";
 		} else {
 			
-			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
-
-			if (!personaNueva.isPresent()) {
-				try {
-				persona =	traSer.registrarPersona(persona);
-					persona = cliService.consultaUltimoCliente();
-					cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
-				} catch (Exception e) {
-					logger.warn("El mail no existe");
-				}
-			
-				persona = cliService.consultaUltimoCliente();
-				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
-			} else {
-				try {
-					comprobarExisteNombreUsuario(persona);
-					
-				} catch (Exception e) {
-					modelo.addAttribute("mensajeError", e.getMessage());
-					logger.warn("El mail ya existe");
-					return "app/registro";
-				}
-				
-			}
+			persona =	traSer.registrarPersona(persona);
+			persona = cliService.consultaUltimoCliente();
+			cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 		
 		}
 		logger.info("Registro realizado con exito");
