@@ -203,7 +203,7 @@ public class ClienteController {
 			HttpSession session, Producto producto) {
 
 		int sumaTotal = 0;
-		int sumaTotalPuntos =0;
+		int sumaTotalPuntos = 0;
 		try {
 			producto = pService.buscarProductoId(id);
 		} catch (IOException e) {
@@ -221,7 +221,7 @@ public class ClienteController {
 		Long idProducto = null;
 
 		for (Producto producto2 : listaCarrito) {
-			if (producto2.getId() == producto.getId() && cantidad!=null) {
+			if (producto2.getId() == producto.getId() && cantidad != null) {
 				idProducto = producto2.getId();
 				producto2.setCantidad(Integer.parseInt(cantidad) + producto2.getCantidad());
 			}
@@ -231,13 +231,12 @@ public class ClienteController {
 			listaCarrito.add(producto);
 			logger.info("producto añadido al carrito con exito");
 		}
-		
 
 		for (Producto pro : listaCarrito) {
-		int	descuento = pro.getPrecioUnitarioSinIva()*pro.getDescuento()/100;
-		int precioFinal = pro.getPrecioUnitarioSinIva()-descuento;
+			int descuento = pro.getPrecioUnitarioSinIva() * pro.getDescuento() / 100;
+			int precioFinal = pro.getPrecioUnitarioSinIva() - descuento;
 			sumaTotal += precioFinal * pro.getCantidad();
-		sumaTotalPuntos +=	pro.getPuntos() * pro.getCantidad();
+			sumaTotalPuntos += pro.getPuntos() * pro.getCantidad();
 		}
 		session.setAttribute("sumaTotal", sumaTotal);
 		sumaTotal = (int) session.getAttribute("sumaTotal");
@@ -246,7 +245,7 @@ public class ClienteController {
 		sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
 		model.addAttribute("sumaTotalPuntos", sumaTotalPuntos);
 		model.addAttribute("carrito", listaCarrito);
-		cantidad=null;
+		cantidad = null;
 		return "redirect:/carrito";
 
 	}
@@ -257,19 +256,18 @@ public class ClienteController {
 		ArrayList<Producto> listaCarrito = null;
 		listaCarrito = (ArrayList<Producto>) session.getAttribute("carrito");
 		model.addAttribute("carrito", listaCarrito);
-	
-		int sumaTotal =0;
-		if (session.getAttribute("sumaTotal")!=null) {
-			 sumaTotal =(int) session.getAttribute("sumaTotal");	
-				model.addAttribute("sumaTotal", sumaTotal);
+
+		int sumaTotal = 0;
+		if (session.getAttribute("sumaTotal") != null) {
+			sumaTotal = (int) session.getAttribute("sumaTotal");
+			model.addAttribute("sumaTotal", sumaTotal);
 		}
-		int sumaTotalPuntos =0;
-		if (session.getAttribute("sumaTotalPuntos")!=null) {
-			 sumaTotalPuntos =(int) session.getAttribute("sumaTotalPuntos");	
-				model.addAttribute("sumaTotalPuntos", sumaTotalPuntos);
+		int sumaTotalPuntos = 0;
+		if (session.getAttribute("sumaTotalPuntos") != null) {
+			sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
+			model.addAttribute("sumaTotalPuntos", sumaTotalPuntos);
 		}
-		
-		
+
 		return "app/carrito";
 	}
 
@@ -297,22 +295,20 @@ public class ClienteController {
 		} else {
 			model.addAttribute("carrito", listaCarrito);
 		}
-			
-		
-		if (session.getAttribute("sumaTotal")!=null) {
+
+		if (session.getAttribute("sumaTotal") != null) {
 			sumaTotal = (int) session.getAttribute("sumaTotal");
-			int descuento = producto.getPrecioUnitarioSinIva()*producto.getDescuento()/100;
-			int descuentoFinal = producto.getPrecioUnitarioSinIva()-descuento;
-			int lineaSuma = descuentoFinal* producto.getCantidad();
-			int sumaTotalFinal = sumaTotal-lineaSuma; 
+			int descuento = producto.getPrecioUnitarioSinIva() * producto.getDescuento() / 100;
+			int descuentoFinal = producto.getPrecioUnitarioSinIva() - descuento;
+			int lineaSuma = descuentoFinal * producto.getCantidad();
+			int sumaTotalFinal = sumaTotal - lineaSuma;
 			model.addAttribute("sumaTotal", sumaTotalFinal);
 			sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
-			int sumaTotalFinalPuntos = sumaTotalPuntos-producto.getPuntos()*producto.getCantidad();
+			int sumaTotalFinalPuntos = sumaTotalPuntos - producto.getPuntos() * producto.getCantidad();
 			model.addAttribute("sumaTotalPuntos", sumaTotalFinalPuntos);
 			logger.info("Producto borrado del carrito con exito");
 		}
 
-		
 		return "app/carrito";
 
 	}
@@ -343,7 +339,8 @@ public class ClienteController {
 		int sumaTotalPuntos = (int) session.getAttribute("sumaTotalPuntos");
 		double saldoCliente = cliente.getSaldo();
 		if (!listaCarrito.isEmpty()) {
-			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0 && puntosCliente - sumaTotalPuntos > 0 ) {
+			if (stockProducto - cantidadComprar > 0 && saldoCliente - sumaTotal > 0
+					&& puntosCliente - sumaTotalPuntos > 0) {
 				for (Producto producto : listaCarrito) {
 					try {
 
@@ -361,7 +358,7 @@ public class ClienteController {
 				model.addAttribute("sumaTotalPuntos", sumaTotalPuntos2);
 				persona = (Persona) session.getAttribute("nombre");
 				try {
-					caSer.insertCabeceraPedido(persona.getId(), sumaTotal,sumaTotalPuntos);
+					caSer.insertCabeceraPedido(persona.getId(), sumaTotal, sumaTotalPuntos);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					logger.warn("pedido no realizado");
@@ -375,10 +372,10 @@ public class ClienteController {
 				}
 				for (Producto producto : listaCarrito) {
 					try {
-						int descuento = producto.getPrecioUnitarioSinIva()*producto.getDescuento()/100;
-						int descuentoFinal = producto.getPrecioUnitarioSinIva()-descuento;
+						int descuento = producto.getPrecioUnitarioSinIva() * producto.getDescuento() / 100;
+						int descuentoFinal = producto.getPrecioUnitarioSinIva() - descuento;
 						deSer.insertDetallePedido(cabecera.getId(), producto.getId(), producto.getCantidad(),
-								descuentoFinal * producto.getCantidad(),producto.getPuntos()*producto.getCantidad());
+								descuentoFinal * producto.getCantidad(), producto.getPuntos() * producto.getCantidad());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -388,26 +385,26 @@ public class ClienteController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				int puntos = sumaTotal/10;
-				
+
+				int puntos = sumaTotal / 10;
+
 				try {
 					cliService.recargarPuntos(cliente.getId(), puntos);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				try {
 					cliService.actualizarPuntosCliente(cliente.getId(), sumaTotalPuntos);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				session.removeAttribute("carrito");
 			} else {
-				
+
 //				if (cliente.getPersona().getTipoPersona()!="CN") {
 //				@SuppressWarnings("unchecked")
 //				ArrayList<Producto> listaCarrito2 = (ArrayList<Producto>) session.getAttribute("carrito");
@@ -482,9 +479,9 @@ public class ClienteController {
 			ArrayList<DetallePedido> detallePedido = deSer.mostrarLineasPedido(id);
 			for (DetallePedido detallePedido2 : detallePedido) {
 				total += detallePedido2.getTotalLinea();
-				totalPuntos+=detallePedido2.getTotalLineaPuntos();
+				totalPuntos += detallePedido2.getTotalLineaPuntos();
 			}
-	
+
 			model.addAttribute("lineasPedido", detallePedido);
 			model.addAttribute("total", total);
 			model.addAttribute("totalPuntos", totalPuntos);
@@ -500,7 +497,7 @@ public class ClienteController {
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionTotal", "devolucionTotal",
-					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverTotal?id=" + id + "", 0, 0);
+					"http://localhost:8080/ControllerDevolverTotal?id=" + id + "", 0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
 		return "redirect:/clientes";
@@ -516,7 +513,7 @@ public class ClienteController {
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial",
 					"devolucionParcial",
-					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
+					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
 					0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
@@ -524,7 +521,7 @@ public class ClienteController {
 		return "redirect:/clientes";
 
 	}
-	
+
 	@SuppressWarnings("unused")
 	private boolean comprobarExisteNombreUsuario(Persona persona) throws Exception {
 		Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
@@ -536,22 +533,33 @@ public class ClienteController {
 
 	@PostMapping("/registro")
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
-			ModelMap modelo, HttpSession session) {
+			ModelMap modelo, HttpSession session) throws Exception {
 		modelo.addAttribute("persona", persona);
 		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
-			logger.warn("Registro fallido");
+			logger.warn("Registro fallido2");
 			return "app/registro";
 		} else {
-			try {
+			
+			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
+
+			if (!personaNueva.isPresent()) {
 				modelo.addAttribute("persona", persona);
 				traSer.registrarPersona(persona);
 				persona = cliService.consultaUltimoCliente();
 				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
-			} catch (Exception e) {
-				modelo.addAttribute("mensajeError", e.getMessage());
+			} else {
+				try {
+					comprobarExisteNombreUsuario(persona);
+					
+				} catch (Exception e) {
+					modelo.addAttribute("mensajeError", e.getMessage());
+					return "app/registro";
+				}
+				
 			}
+		
 		}
 		logger.info("Registro realizado con exito");
 		return "app/login";
@@ -606,7 +614,6 @@ public class ClienteController {
 			e.printStackTrace();
 		}
 		model.addAttribute("listaValoraciones", listaProducto);
-
 
 		return "app/productos";
 
@@ -676,13 +683,12 @@ public class ClienteController {
 		return ResponseEntity.ok("Success");
 
 	}
-	
-	
+
 	@GetMapping("/recargarSaldo")
-	public String recargarSaldoGet(Model model, HttpSession session,Persona persona,Cliente cliente) {
-		
+	public String recargarSaldoGet(Model model, HttpSession session, Persona persona, Cliente cliente) {
+
 		persona = (Persona) session.getAttribute("nombre");
-		
+
 		try {
 			cliente = cliService.buscarClienteId(persona.getId());
 		} catch (Exception e) {
@@ -690,24 +696,23 @@ public class ClienteController {
 			e.printStackTrace();
 		}
 		model.addAttribute("nombreCliente", cliente);
-		
+
 		return "app/recargarSaldo";
-		
+
 	}
-	
+
 	@PostMapping("/recargarSaldo")
-	public String recargarSaldoPost(@RequestParam(name = "saldoNuevo") String saldoNuevo,Persona persona,
-			Cliente cliente, HttpSession session,Model model) {
-		
-		
-	persona = (Persona) session.getAttribute("nombre");
-		
+	public String recargarSaldoPost(@RequestParam(name = "saldoNuevo") String saldoNuevo, Persona persona,
+			Cliente cliente, HttpSession session, Model model) {
+
+		persona = (Persona) session.getAttribute("nombre");
+
 		try {
 			cliente = cliService.buscarClienteId(persona.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			cliService.recargarSaldoCliente(cliente.getId(), Integer.parseInt(saldoNuevo));
 		} catch (NumberFormatException e) {
@@ -715,10 +720,9 @@ public class ClienteController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "redirect:/clientes";
-		
+
 	}
-	
 
 }
