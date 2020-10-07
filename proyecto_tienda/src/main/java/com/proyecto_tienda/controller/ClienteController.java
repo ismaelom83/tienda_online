@@ -547,6 +547,8 @@ public class ClienteController {
 			if (!personaNueva.isPresent()) {
 				try {
 					traSer.registrarPersona(persona);
+					persona = cliService.consultaUltimoCliente();
+					cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 				} catch (Exception e) {
 					logger.warn("El mail no existe");
 				}
