@@ -546,13 +546,13 @@ public class ClienteController {
 
 			if (!personaNueva.isPresent()) {
 				try {
-					comprobarExisteNombreUsuario(persona);
-					
+					traSer.registrarPersona(persona);
 				} catch (Exception e) {
-					modelo.addAttribute("mensajeError", e.getMessage());
-					logger.warn("El mail ya existe");
-					return "app/registro";
+					logger.warn("El mail no existe");
 				}
+			
+				persona = cliService.consultaUltimoCliente();
+				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 			} else {
 				try {
 					comprobarExisteNombreUsuario(persona);
