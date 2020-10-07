@@ -561,7 +561,7 @@ public class ClienteController {
 		
 		}
 		logger.info("Registro realizado con exito");
-		return "app/login";
+		return "app/registro";
 
 	}
 
