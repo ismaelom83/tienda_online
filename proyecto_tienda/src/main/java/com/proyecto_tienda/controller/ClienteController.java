@@ -541,12 +541,14 @@ public class ClienteController {
 			logger.warn("Registro fallido2");
 			return "app/registro";
 		} else {
-			
-			Persona  persona2 = new Persona(); 
-			
-			persona2 =	traSer.registrarPersona(persona);
-			persona2 = cliService.consultaUltimoCliente();
-			cliService.registrarClientes(persona2.getId(), 10000, 10000, "normal");
+			try {
+				traSer.registrarPersona(persona);
+			} catch (IllegalArgumentException e) {
+				logger.warn("Registro fallido2");
+			}
+		
+			persona = cliService.consultaUltimoCliente();
+			cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 		
 		}
 		logger.info("Registro realizado con exito");
