@@ -538,17 +538,35 @@ public class ClienteController {
 		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
-			logger.warn("Registro fallido");
+			logger.warn("Registro fallido2");
 			return "app/registro";
 		} else {
-			try {
-				traSer.registrarPersona(persona);
+			
+			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
+
+			if (!personaNueva.isPresent()) {
+				try {
+				persona =	traSer.registrarPersona(persona);
+					persona = cliService.consultaUltimoCliente();
+					cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
+				} catch (Exception e) {
+					logger.warn(String.format("%s Registro fallido2 %s", persona.getId()));
+				}
+			
 				persona = cliService.consultaUltimoCliente();
 				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
-			} catch (IllegalArgumentException e) {
-				logger.warn(String.format("%s Registro fallido2 %s", persona.getId()));
+			} else {
+				try {
+					comprobarExisteNombreUsuario(persona);
+					
+				} catch (Exception e) {
+					modelo.addAttribute("mensajeError", e.getMessage());
+					logger.warn("El mail ya existe");
+					return "app/registro";
+				}
+				
 			}
-	
+		
 		}
 		logger.info("Registro realizado con exito");
 		return "app/login";
