@@ -539,7 +539,7 @@ public class ClienteController {
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido2");
-			return "app/registro";
+			return "app/login";
 		} else {
 			
 			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
