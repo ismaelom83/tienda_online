@@ -35,11 +35,11 @@ public class TrabajadoreServiceImp implements TrabajadoreService{
 	}
 
 	@Override
-	public Persona registrarPersona(Persona persona) throws Exception {
+	public Persona registrarPersona(Persona persona) {
 		
 			String encriptarPassword = encriptacion.encode(persona.getPass());
 			persona.setPass(encriptarPassword);
-			persona = perRepo.save(persona);
+			persona = perRepo.save2(persona);
 			
 		
 		return persona;
