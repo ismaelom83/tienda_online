@@ -11,5 +11,4 @@ import com.proyecto_tienda.model.Persona;
 public interface PersonaRepo extends CrudRepository<Persona, Long> {
 	
 	public Optional<Persona> findBymail(String email);
-	public  <S> S save2(Persona persona);
 }

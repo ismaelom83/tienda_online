@@ -39,7 +39,7 @@ public class TrabajadoreServiceImp implements TrabajadoreService{
 		
 			String encriptarPassword = encriptacion.encode(persona.getPass());
 			persona.setPass(encriptarPassword);
-			persona = perRepo.save2(persona);
+			persona = perRepo.save(persona);
 			
 		
 		return persona;
