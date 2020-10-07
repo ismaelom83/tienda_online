@@ -535,6 +535,7 @@ public class ClienteController {
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
 			ModelMap modelo, HttpSession session) throws Exception {
 		modelo.addAttribute("persona", persona);
+		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido2");
@@ -544,14 +545,9 @@ public class ClienteController {
 			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
 
 			if (!personaNueva.isPresent()) {
-				try {
-					comprobarExisteNombreUsuario(persona);
-					
-				} catch (Exception e) {
-					modelo.addAttribute("mensajeError", e.getMessage());
-					logger.warn("El mail no existe");
-					return "app/registro";
-				}
+				traSer.registrarPersona(persona);
+				persona = cliService.consultaUltimoCliente();
+				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 			} else {
 				try {
 					comprobarExisteNombreUsuario(persona);
@@ -566,7 +562,7 @@ public class ClienteController {
 		
 		}
 		logger.info("Registro realizado con exito");
-		return "app/login";
+		return "app/registro";
 
 	}
 
