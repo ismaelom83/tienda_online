@@ -550,7 +550,7 @@ public class ClienteController {
 					persona = cliService.consultaUltimoCliente();
 					cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 				} catch (Exception e) {
-					logger.warn("El mail no existe");
+					logger.warn(String.format("%s Registro fallido2 %s", persona.getId()));
 				}
 			
 				persona = cliService.consultaUltimoCliente();
