@@ -526,7 +526,7 @@ public class ClienteController {
 	private boolean comprobarExisteNombreUsuario(Persona persona) throws Exception {
 		Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
 		if (personaNueva.isPresent()) {
-			throw new Exception("Este email de usuario ya existe");
+			throw new Exception("Este nombre de usuario ya existe");
 		}
 		return true;
 	}
@@ -535,19 +535,23 @@ public class ClienteController {
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
 			ModelMap modelo, HttpSession session) throws Exception {
 		modelo.addAttribute("persona", persona);
-//		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido2");
-			return "app/login";
+			return "app/registro";
 		} else {
 			
 			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
 
 			if (!personaNueva.isPresent()) {
-				traSer.registrarPersona(persona);
-				persona = cliService.consultaUltimoCliente();
-				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
+				try {
+					comprobarExisteNombreUsuario(persona);
+					
+				} catch (Exception e) {
+					modelo.addAttribute("mensajeError", e.getMessage());
+					logger.warn("El mail no existe");
+					return "app/registro";
+				}
 			} else {
 				try {
 					comprobarExisteNombreUsuario(persona);
@@ -555,7 +559,7 @@ public class ClienteController {
 				} catch (Exception e) {
 					modelo.addAttribute("mensajeError", e.getMessage());
 					logger.warn("El mail ya existe");
-					return "app/login";
+					return "app/registro";
 				}
 				
 			}
