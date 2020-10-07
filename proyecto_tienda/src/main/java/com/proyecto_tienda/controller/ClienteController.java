@@ -545,9 +545,9 @@ public class ClienteController {
 			Optional<Persona> personaNueva = personaRepoInterface.findBymail(persona.getMail());
 
 			if (!personaNueva.isPresent()) {
-				traSer.registrarPersona(persona);
-				persona = cliService.consultaUltimoCliente();
-				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
+//				traSer.registrarPersona(persona);
+//				persona = cliService.consultaUltimoCliente();
+//				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 			} else {
 				try {
 					comprobarExisteNombreUsuario(persona);
