@@ -535,7 +535,7 @@ public class ClienteController {
 	public String registroClientes(@Valid @ModelAttribute("persona") Persona persona, BindingResult resultado,
 			ModelMap modelo, HttpSession session) throws Exception {
 		modelo.addAttribute("persona", persona);
-		modelo.addAttribute("registro", true);
+//		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
 			logger.warn("Registro fallido2");
@@ -554,6 +554,7 @@ public class ClienteController {
 					
 				} catch (Exception e) {
 					modelo.addAttribute("mensajeError", e.getMessage());
+					logger.warn("El mail ya existe");
 					return "app/registro";
 				}
 				
@@ -561,7 +562,7 @@ public class ClienteController {
 		
 		}
 		logger.info("Registro realizado con exito");
-		return "app/registro";
+		return "app/login";
 
 	}
 
