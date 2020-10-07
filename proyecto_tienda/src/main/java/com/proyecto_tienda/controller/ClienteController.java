@@ -538,18 +538,17 @@ public class ClienteController {
 		modelo.addAttribute("registro", true);
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("persona", persona);
-			logger.warn("Registro fallido2");
+			logger.warn("Registro fallido");
 			return "app/registro";
 		} else {
 			try {
 				traSer.registrarPersona(persona);
+				persona = cliService.consultaUltimoCliente();
+				cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
 			} catch (IllegalArgumentException e) {
-				logger.warn("Registro fallido2");
+				logger.warn(String.format("%s Registro fallido2 %s", persona.getId()));
 			}
-		
-			persona = cliService.consultaUltimoCliente();
-			cliService.registrarClientes(persona.getId(), 10000, 10000, "normal");
-		
+	
 		}
 		logger.info("Registro realizado con exito");
 		return "app/login";
