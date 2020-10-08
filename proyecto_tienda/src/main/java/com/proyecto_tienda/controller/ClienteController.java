@@ -89,7 +89,10 @@ public class ClienteController {
 	PersonaRepo personaRepoInterface;
 
 	@GetMapping({ "/", "index" })
-	public String index(Model model) {
+	public String index(Model model,HttpSession session) {
+		session.removeAttribute("nombre");
+		session.invalidate();
+		System.out.println("Estoy en el controlador del index");
 		ArrayList<CategoriasMenu> listaCategorias = null;
 		try {
 			listaCategorias = catService.buscarCategoria();
@@ -104,6 +107,7 @@ public class ClienteController {
 			e.printStackTrace();
 			logger.error("Lista de productos no encontrada");
 		}
+		
 		return "index";
 	}
 
@@ -497,7 +501,7 @@ public class ClienteController {
 		ArrayList<Persona> personaLista = traSer.buscarDepartamentoVentas("TV");
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionTotal", "devolucionTotal",
-					"http://localhost:8080/ControllerDevolverTotal?id=" + id + "", 0, 0);
+					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverTotal?id=" + id + "", 0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());
 		return "redirect:/clientes";
@@ -513,7 +517,7 @@ public class ClienteController {
 		for (Persona persona2 : personaLista) {
 			traSer.insertarMensajesDevolucion(persona2.getId(), persona.getId(), "devolucionParcial",
 					"devolucionParcial",
-					"http://localhost:8080/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
+					"https://ismael-tienda-online.herokuapp.com/ControllerDevolverParcial?id=" + idLineaProducto + "&id2=" + idCabecera + "",
 					0, 0);
 		}
 		logger.info("Devolucion realizada con exito: " + persona.getNombre());

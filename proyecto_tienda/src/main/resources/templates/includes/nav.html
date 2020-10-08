@@ -8,15 +8,15 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li sec:authorize="isAuthenticated()"><a class="nav-item active nav-link"
+			<li th:if="${nombre!=null}"><a class="nav-item active nav-link"
 					th:href="@{/misPedidos}">MisPedidos</a></li>
 			<!-- <li><a class="nav-item active nav-link" href="ControllerCliente">Volver Zona Compra</a></li> -->
-			<li sec:authorize="isAuthenticated()"><a class="nav-item active nav-link" th:href="@{/enviarMensaje}">Enviar
+			<li th:if="${nombre!=null}"><a class="nav-item active nav-link" th:href="@{/enviarMensaje}">Enviar
 					Mensaje</a></li>
-					<li sec:authorize="isAuthenticated()"> <a href="" class="nav-item active nav-link" data-toggle="modal"
+					<li th:if="${nombre!=null}"> <a href="" class="nav-item active nav-link" data-toggle="modal"
 						data-target="#changePasswordModal">CambiarPassword</a></li>
-							<li sec:authorize="isAuthenticated()"> <a th:href="@{/recargarSaldo}" class="nav-item active nav-link">RecargarSaldo</a></li>
-					<li sec:authorize="isAuthenticated()"> <a th:href="@{/verPromocionesCliente}" class="nav-item active nav-link">Ver Promociones</a></li>
+							<li th:if="${nombre!=null}"> <a th:href="@{/recargarSaldo}" class="nav-item active nav-link">RecargarSaldo</a></li>
+					<li th:if="${nombre!=null}"> <a th:href="@{/verPromocionesCliente}" class="nav-item active nav-link">Ver Promociones</a></li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false">
@@ -26,42 +26,40 @@
 					<div th:each="cat: ${listaCategorias}">
 						<a th:href="@{/controllerFiltroClientes?(categoria=${cat.categoria})}" th:text="${cat.categoria}">Ver </a>
 					</div>
-					<a sec:authorize="isAuthenticated()" th:href="@{/clientes}">Ver Todos</a>
-					<a sec:authorize="!isAuthenticated()" th:href="@{/index}">Ver Todos</a>
+					<a th:if="${nombre!=null}" th:href="@{/clientes}">Ver Todos</a>
+					<a th:if="${nombre==null}" th:href="@{/index}">Ver Todos</a>
 				</div>
 			</li>
 		</ul>
 
 
 
-		<ul class="navbar-nav mr-auto">
-			<li sec:authorize="isAuthenticated()">Bienvenido <span th:text="${nombre.getNombre()}"></span></li>
+		<ul class="navbar-nav mr-auto" th:if="${nombre!=null}">
+			<li>Bienvenido <span th:text="${nombre.getNombre()}"></span></li>
 		</ul>
 		<form class="navbar-form navbar-right" style="margin-right: 30px; width: 400px">
 			<input type="text" class="form-control" placeholder="Buscar En la Tienda Online De Ismael..." name="q">
 		</form>
 
 		<ul class="nav navbar-nav navbar-right">
-			<li sec:authorize="isAuthenticated()"><a class="nav-item active nav-link" th:href="@{/verPerfil/{id}(id=${nombre.getId()})}">Ver Perfil</a></li>
-			<li style="margin-right:20px;"><a  sec:authorize="isAuthenticated()" class="nav-item active nav-link" th:href="@{/carrito}"><img alt="carrito" width="40px"
+			<li th:if="${nombre!=null}"><a class="nav-item active nav-link" th:href="@{/verPerfil/{id}(id=${nombre.getId()})}">Ver Perfil</a></li>
+			<li  th:if="${nombre!=null}" style="margin-right:20px;"><a class="nav-item active nav-link" th:href="@{/carrito}"><img alt="carrito" width="40px"
 						height="40px" src="./img/baseline_shopping_cart_black_18dp.png"></a></li>
-
-
-
-
-
-			<li sec:authorize="!isAuthenticated()" style="margin-left: 20px; margin-right: 30px;"><a
+	
+			<li th:if="${nombre==null}" style="margin-left: 20px; margin-right: 30px;"><a
 					class="nav-item active nav-link" th:href="@{login}">
 					<img alt="" src="./img/baseline_login_black_18dp.png"></a></li>
 
 
-			<div sec:authorize="isAuthenticated()">
+			<div  th:if="${nombre!=null}">
 				<li><a class="nav-item active nav-link" th:href="@{/logout}"> <img alt=""
 							src="img/Human-gnome-logout.svg.png" width="40px" height="40px">
 					</a></li>
 			</div>
 
 		</ul>
+		
+		
 
 
 	</div>
